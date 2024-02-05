@@ -1,0 +1,15 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@400;900&family=RocknRoll+One&family=Saira+Stencil+One&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  background-color: #000;
+  font-family: Kanit, Verdana, Geneva, Tahoma, sans-serif;
+  color: #fff;
+}
+
+.rock-font {
+  font-family: "RocknRoll One", Verdana, Geneva, Tahoma, sans-serif;
+}
