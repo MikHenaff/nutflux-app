@@ -1,4 +1,4 @@
-const HomeNavbar = () => {
+const SignNavbar = () => {
   return (
     <>
       <div className="flex justify-between xl:justify-around items-center absolute w-full p-5 xl:px-0 z-50">
@@ -17,18 +17,9 @@ const HomeNavbar = () => {
             NUTFLUX
           </p>
         )}
-
-        <div>
-          <button className="mr-5 xl:mr-8 border border-white bg-black px-3 py-1 rounded-sm">
-            Sign In
-          </button>
-          <button className="border border-[#e50914] px-3 py-1 rounded-sm bg-[#e50914]">
-            Sign Up
-          </button>
-        </div>
       </div>
     </>
   );
 };
 
-export default HomeNavbar;
+export default SignNavbar;
