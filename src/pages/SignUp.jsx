@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import BGimg from "../assets/nutflux-bg.jpg";
 
 const SignUp = () => {
@@ -28,9 +29,9 @@ const SignUp = () => {
           </form>
           <p className="text-center pt-5 sm:pt-0 xl:pt-5">
             <span className="text-[#9db9bb]">Already a member?</span>{" "}
-            <a href="#" className="hover:underline">
+            <Link to="../signin" className="hover:underline">
               Sign in now
-            </a>
+            </Link>
             .
           </p>
         </div>

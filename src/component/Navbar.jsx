@@ -1,10 +1,13 @@
+import { Link } from "react-router-dom";
+
 const HomeNavbar = () => {
+  const isLogged = true;
   return (
     <>
-      <div className="flex justify-between xl:justify-around items-center absolute w-full p-5 xl:px-0 z-50">
+      <nav className="flex justify-between xl:justify-around items-center absolute w-full p-5 xl:px-0 z-50">
         {window.innerWidth < 400 ? (
           <p
-            className="rock-font text-6xl text-[#e50914] font-bold"
+            className="rock-font text-5xl text-[#e50914] font-bold"
             style={{ textShadow: "1px 1px 0 black, -1px -1px 0 black" }}
           >
             N
@@ -19,14 +22,31 @@ const HomeNavbar = () => {
         )}
 
         <div>
-          <button className="mr-5 xl:mr-8 border border-white bg-black px-3 py-1 rounded-sm">
-            Sign In
-          </button>
-          <button className="border border-[#e50914] px-3 py-1 rounded-sm bg-[#e50914]">
-            Sign Up
-          </button>
+          {isLogged ? (
+            <Link
+              to="signout"
+              className="mr-5 xl:mr-8 border border-white bg-black px-3 py-1 rounded-sm"
+            >
+              Sign Out
+            </Link>
+          ) : (
+            <>
+              <Link
+                to="signin"
+                className="mr-5 xl:mr-8 border border-white bg-black px-3 py-1 rounded-sm"
+              >
+                Sign In
+              </Link>
+              <Link
+                to="signup"
+                className="border border-[#e50914] px-3 py-1 rounded-sm bg-[#e50914]"
+              >
+                Sign Up
+              </Link>
+            </>
+          )}
         </div>
-      </div>
+      </nav>
     </>
   );
 };
