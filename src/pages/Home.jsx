@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Main from "../component/Main";
+import Main from "../components/Main";
 import urls from "../functions/urls";
 import BGimg from "../assets/nutflux-bg.jpg";
 
