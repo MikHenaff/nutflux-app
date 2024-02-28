@@ -8,7 +8,7 @@ const HomeNavbar = () => {
         {window.innerWidth < 400 ? (
           <p
             className="rock-font text-5xl text-[#e50914] font-bold"
-            style={{ textShadow: "1px 1px 0 black, -1px -1px 0 black" }}
+            style={{ textShadow: "2px 2px 0 black, -2px -2px 0 black" }}
           >
             N
           </p>
@@ -25,7 +25,7 @@ const HomeNavbar = () => {
           {isLogged ? (
             <Link
               to="signout"
-              className="mr-5 xl:mr-8 border border-white bg-black px-3 py-1 rounded-sm"
+              className="border border-white bg-black px-3 py-1 rounded-sm"
             >
               Sign Out
             </Link>

@@ -12,22 +12,22 @@ const Movies = ({ name, url, moviesId }) => {
 
   const slideLeft = () => {
     const slider = document.getElementById("slider" + moviesId);
-    slider.scrollLeft = slider.scrollLeft - 150;
+    slider.scrollLeft = slider.scrollLeft - 500;
   };
 
   const slideRight = () => {
     const slider = document.getElementById("slider" + moviesId);
-    slider.scrollLeft = slider.scrollLeft + 150;
+    slider.scrollLeft = slider.scrollLeft + 500;
   };
 
   return (
-    <div className="mt-10 mb-14">
-      <h2 className="text-2xl m-2">{name}</h2>
+    <div className="mb-10">
+      <h3 className="text-xl sm:text-2xl m-2">{name}</h3>
       <div className="relative flex items-center">
         <FaChevronLeft
           onClick={() => slideLeft()}
           size={20}
-          className="cursor-pointer mx-2"
+          className="hidden lg:block cursor-pointer mx-2"
           style={{ color: "#e50914" }}
         />
         <div
@@ -48,7 +48,7 @@ const Movies = ({ name, url, moviesId }) => {
                       alt={`${movie.title} backdrop`}
                       className="w-full h-auto block"
                     />
-                    <p className="text-center pt-2">{movie.title}</p>
+                    <p className="text-center pt-2 text-xs">{movie.title}</p>
                   </div>
                 )
             )}
@@ -56,7 +56,7 @@ const Movies = ({ name, url, moviesId }) => {
         <FaChevronRight
           onClick={() => slideRight()}
           size={20}
-          className="cursor-pointer mx-2"
+          className="hidden lg:block cursor-pointer mx-2"
           style={{ color: "#e50914" }}
         />
       </div>
