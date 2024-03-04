@@ -2,12 +2,12 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
-const Movies = ({ name, url, moviesId }) => {
-  const [movies, setMovies] = useState([]);
-  const backdropBase = "https://image.tmdb.org/t/p/original/";
+const MoviesAndTVShows = ({ name, url, moviesId }) => {
+  const [tvShows, setTvShows] = useState([]);
+  const backdropBase = "https://image.tmdb.org/t/p/w500/";
 
   useEffect(() => {
-    axios.get(url).then((response) => setMovies(response.data.results));
+    axios.get(url).then((response) => setTvShows(response.data.results));
   }, [url]);
 
   const slideLeft = () => {
@@ -34,22 +34,22 @@ const Movies = ({ name, url, moviesId }) => {
           id={"slider" + moviesId}
           className="w-full h-full overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
         >
-          {movies &&
-            movies.map(
-              (movie) =>
-                movie.title &&
-                movie.backdrop_path && (
+          {tvShows &&
+            tvShows.map(
+              (tvShow) =>
+                (tvShow.name || tvShow.title) &&
+                tvShow.backdrop_path && (
                   <div
-                    key={movie.id}
+                    key={tvShow.id}
                     className="relative w-[150px] sm:w-[200px] md:w-[250px] lg:w-[300px] inline-block cursor-pointer m-2"
                   >
                     <img
-                      src={`${backdropBase}${movie.backdrop_path}`}
-                      alt={`${movie.title} backdrop`}
+                      src={`${backdropBase}${tvShow.backdrop_path}`}
+                      alt={`${tvShow.name || tvShow.title} backdrop`}
                       className="w-full h-auto block"
                     />
                     <p className="text-center pt-2 text-xs sm:text-sm overflow-hidden">
-                      {movie.title}
+                      {tvShow.name || tvShow.title}
                     </p>
                   </div>
                 )
@@ -66,4 +66,4 @@ const Movies = ({ name, url, moviesId }) => {
   );
 };
 
-export default Movies;
+export default MoviesAndTVShows;

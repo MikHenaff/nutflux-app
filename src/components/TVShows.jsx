@@ -12,12 +12,12 @@ const TVShows = ({ name, url, tvShowsId }) => {
 
   const slideLeft = () => {
     const slider = document.getElementById("slider" + tvShowsId);
-    slider.scrollLeft = slider.scrollLeft - 500;
+    slider.scrollLeft = slider.scrollLeft - 750;
   };
 
   const slideRight = () => {
     const slider = document.getElementById("slider" + tvShowsId);
-    slider.scrollLeft = slider.scrollLeft + 500;
+    slider.scrollLeft = slider.scrollLeft + 750;
   };
 
   return (
@@ -48,7 +48,7 @@ const TVShows = ({ name, url, tvShowsId }) => {
                       alt={`${tvShow.name} backdrop`}
                       className="w-full h-auto block"
                     />
-                    <p className="text-center pt-2 text-xs overflow-hidden">
+                    <p className="text-center pt-2 text-xs sm:text-sm overflow-hidden">
                       {tvShow.name}
                     </p>
                   </div>

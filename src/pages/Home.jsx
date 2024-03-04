@@ -19,7 +19,7 @@ const Home = () => {
   return (
     <>
       {isLogged ? (
-        <div className="w-full h-full">
+        <div className="w-full h-full pt-[55px] sm:pt-0">
           <div className="relative">
             <img
               src={`${backdropBase}${bgRandomMovie?.backdrop_path}`}
@@ -27,8 +27,8 @@ const Home = () => {
               className="w-full h-1/3 object-cover object-left	"
             />
             <div className="absolute top-0 left-0 w-full h-full flex justify-center items-end">
-              <div className="flex flex-col justify-center items-center w-full bg-gradient-to-t from-black/100 to-black/10 overflow-hidden">
-                <p className="text-lg sm:text-2xl pt-2">
+              <div className="flex flex-col justify-center items-center w-full bg-gradient-to-t from-black/100 overflow-hidden">
+                <p className="text-lg sm:text-2xl pt-2 underline underline-offset-2">
                   {bgRandomMovie?.title}
                 </p>
                 <p className="text-sm sm:text-base pb-2 sm:pb-5">

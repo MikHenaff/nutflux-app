@@ -11,7 +11,6 @@ const SignNavbar = () => {
         >
           NUTFLUX
         </Link>
-        {/*)}*/}
       </div>
     </>
   );
