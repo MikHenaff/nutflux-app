@@ -3,11 +3,11 @@ import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import SignOut from "./pages/SignOut";
-import MovieDesc from "./pages/MovieDesc";
+import CineDesc from "./pages/CineDesc";
 import HomeNavbar from "./components/HomeNavbar";
-import ProfileNavbar from "./components/ProfileNavbar";
+import AccountNavbar from "./components/AccountNavbar";
 import Main from "./components/Main";
-import EditProfile from "./pages/EditProfile";
+import EditAccount from "./pages/EditAccount";
 
 const router = createBrowserRouter([
   {
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     path: "/signup",
     element: (
       <>
-        <ProfileNavbar />
+        <AccountNavbar />
         <SignUp />
       </>
     ),
@@ -32,7 +32,7 @@ const router = createBrowserRouter([
     path: "/signin",
     element: (
       <>
-        <ProfileNavbar />
+        <AccountNavbar />
         <SignIn />
       </>
     ),
@@ -41,17 +41,26 @@ const router = createBrowserRouter([
     path: "/signout",
     element: (
       <>
-        <ProfileNavbar />
+        <AccountNavbar />
         <SignOut />
       </>
     ),
   },
   {
-    path: "/edit-profile",
+    path: "/edit-account",
     element: (
       <>
-        <ProfileNavbar />
-        <EditProfile />
+        <AccountNavbar />
+        <EditAccount />
+      </>
+    ),
+  },
+  {
+    path: "/cine-desc",
+    element: (
+      <>
+        <HomeNavbar />
+        <CineDesc />
       </>
     ),
   },
@@ -66,7 +75,7 @@ function App() {
       {/*<SignIn />*/}
       {/*<SignUp />*/}
       {/*<Main />*/}
-      {/*<MovieDesc />*/}
+      {/*<CineDesc />*/}
     </>
   );
 }

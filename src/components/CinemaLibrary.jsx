@@ -1,22 +1,23 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-const MoviesAndTVShows = ({ name, url, moviesId }) => {
-  const [tvShows, setTvShows] = useState([]);
+const CinemaLibrary = ({ cineId, name, url }) => {
+  const [cineShows, setCineShows] = useState([]);
   const backdropBase = "https://image.tmdb.org/t/p/w500/";
 
   useEffect(() => {
-    axios.get(url).then((response) => setTvShows(response.data.results));
+    axios.get(url).then((response) => setCineShows(response.data.results));
   }, [url]);
 
   const slideLeft = () => {
-    const slider = document.getElementById("slider" + moviesId);
+    const slider = document.getElementById("slider" + cineId);
     slider.scrollLeft = slider.scrollLeft - 750;
   };
 
   const slideRight = () => {
-    const slider = document.getElementById("slider" + moviesId);
+    const slider = document.getElementById("slider" + cineId);
     slider.scrollLeft = slider.scrollLeft + 750;
   };
 
@@ -31,27 +32,36 @@ const MoviesAndTVShows = ({ name, url, moviesId }) => {
           style={{ color: "#e50914" }}
         />
         <div
-          id={"slider" + moviesId}
+          id={"slider" + cineId}
           className="w-full h-full overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
         >
-          {tvShows &&
-            tvShows.map(
-              (tvShow) =>
-                (tvShow.name || tvShow.title) &&
-                tvShow.backdrop_path && (
-                  <div
-                    key={tvShow.id}
+          {cineShows &&
+            cineShows.map(
+              (cineShow) =>
+                (cineShow.title || cineShow.name) &&
+                cineShow.backdrop_path && (
+                  <Link
+                    to="../cine-desc"
+                    //state={{
+                    //  title: `${cineShow.title || cineShow.name}`,
+                    //  backdrop_path: `${cineShow.backdrop_path}`,
+                    //}}
+                    state={{
+                      id: cineShow.id,
+                      type: cineId,
+                    }}
+                    key={cineShow.id}
                     className="relative w-[150px] sm:w-[200px] md:w-[250px] lg:w-[300px] inline-block cursor-pointer m-2"
                   >
                     <img
-                      src={`${backdropBase}${tvShow.backdrop_path}`}
-                      alt={`${tvShow.name || tvShow.title} backdrop`}
+                      src={`${backdropBase}${cineShow.backdrop_path}`}
+                      alt={`${cineShow.title || cineShow.name} backdrop`}
                       className="w-full h-auto block"
                     />
                     <p className="text-center pt-2 text-xs sm:text-sm overflow-hidden">
-                      {tvShow.name || tvShow.title}
+                      {cineShow.title || cineShow.name}
                     </p>
-                  </div>
+                  </Link>
                 )
             )}
         </div>
@@ -66,4 +76,4 @@ const MoviesAndTVShows = ({ name, url, moviesId }) => {
   );
 };
 
-export default MoviesAndTVShows;
+export default CinemaLibrary;

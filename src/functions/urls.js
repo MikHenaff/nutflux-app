@@ -13,6 +13,9 @@ const urls = {
   crimeTVShows: `https://api.themoviedb.org/3/discover/tv?api_key=${key}&include_adult=false&include_video=false&language=en-US&page=1&sort_by=first_air_date.desc&with_genres=80`,
   dramaTVShows: `https://api.themoviedb.org/3/discover/tv?api_key=${key}&include_adult=false&include_video=false&language=en-US&page=1&sort_by=first_air_date.desc&with_genres=18`,
   documentaryTVShows: `https://api.themoviedb.org/3/discover/tv?api_key=${key}&include_adult=false&include_video=false&language=en-US&page=1&sort_by=first_air_date.desc&with_genres=99`,
+  baseMovieUrlById: "https://api.themoviedb.org/3/movie/",
+  baseTVShowUrlById: "https://api.themoviedb.org/3/tv/",
+  endUrlById: `?api_key=${key}&language=en-US`,
 };
 
 export default urls;

@@ -28,11 +28,8 @@ const Home = () => {
             />
             <div className="absolute top-0 left-0 w-full h-full flex justify-center items-end">
               <div className="flex flex-col justify-center items-center w-full bg-gradient-to-t from-black/100 overflow-hidden">
-                <p className="text-lg sm:text-2xl pt-2 underline underline-offset-2">
+                <p className="text-md sm:text-xl py-2">
                   {bgRandomMovie?.title}
-                </p>
-                <p className="text-sm sm:text-base pb-2 sm:pb-5">
-                  is now available
                 </p>
               </div>
             </div>
