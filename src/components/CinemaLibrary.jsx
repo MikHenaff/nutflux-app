@@ -42,10 +42,6 @@ const CinemaLibrary = ({ cineId, name, url }) => {
                 cineShow.backdrop_path && (
                   <Link
                     to="../cine-desc"
-                    //state={{
-                    //  title: `${cineShow.title || cineShow.name}`,
-                    //  backdrop_path: `${cineShow.backdrop_path}`,
-                    //}}
                     state={{
                       id: cineShow.id,
                       type: cineId,
