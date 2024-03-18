@@ -76,27 +76,23 @@ const CineDesc = () => {
     });
   }, [cineShowUrl]);
 
-  const truncateOverview = (str, num) => {
-    return str?.length > num ? str.slice(0, num) + "..." : str;
-  };
-
   return (
     <div>
-      <div className="w-full h-full">
+      <div className="w-full h-full pt-[55px]">
         <div className="relative">
           <img
             src={`${backdropBase}${cineShow?.backdrop_path}`}
             alt={cineShow?.title}
-            className="w-full h-full object-cover"
+            className="w-full h-full sm:h-[calc(100vh-55px)] object-cover"
           />
           <div
-            className="sm:absolute top-0 left-0 bg-gradient-to-r from-black/100 to-black/0 w-full 
+            className="sm:absolute top-0 left-0 bg-gradient-to-r from-black/100 to-black/0 w-full sm:w-2/3 lg:w-1/2 2xl:w-1/3
           h-full flex flex-col justify-center items-center sm:items-start p-5 overflow-hidden"
           >
-            <p className="text-2xl sm:text-4xl pb-5">
+            <p className="text-2xl sm:text-4xl underline underline-offset-2">
               {cineShow?.title || cineShow?.name}
             </p>
-            <p>{cineShow?.tagline}</p>
+            <p className="pb-4">{cineShow?.tagline}</p>
             <p className="text-sm sm:text-base text-[#999] pb-5">
               {cineShow?.release_date?.split("-")[0] ||
                 cineShow?.first_air_date?.split("-")[0]}{" "}
@@ -117,30 +113,36 @@ const CineDesc = () => {
                 My List
               </button>
             </div>
-            <p className="sm:text-2xl">
-              {window.innerWidth < 760
-                ? cineShow?.overview
-                : truncateOverview(cineShow?.overview, 150)}
-            </p>
-            {actors && (
-              <p className="flex">
-                <span className="text-[#999]">Starring:&nbsp;</span>
-                {actors}
-              </p>
-            )}
-            {cineShowType < 7
-              ? directors && (
-                  <p>
-                    <span className="text-[#999]">Directed by:&nbsp;</span>
-                    {directors}
-                  </p>
-                )
-              : creators && (
-                  <p>
-                    <span className="text-[#999]">Created by:&nbsp;</span>
-                    {creators}
-                  </p>
-                )}
+            <p className="sm:text-xl mb-5">{cineShow?.overview}</p>
+            <div className="flex flex-col pb-5">
+              {actors && (
+                <p>
+                  <span className="text-[#999]">Starring:&nbsp;</span>
+                  {actors}
+                </p>
+              )}
+              {cineShowType < 7
+                ? directors && (
+                    <p>
+                      <span className="text-[#999]">Directed by:&nbsp;</span>
+                      {directors}
+                    </p>
+                  )
+                : creators && (
+                    <p>
+                      <span className="text-[#999]">Created by:&nbsp;</span>
+                      {creators}
+                    </p>
+                  )}
+            </div>
+            <div>
+              <button
+                onClick={() => history.back()}
+                className="text-sm border rounded-sm px-3 py-2"
+              >
+                Go Back
+              </button>
+            </div>
           </div>
         </div>
       </div>

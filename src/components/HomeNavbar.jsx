@@ -7,18 +7,20 @@ const HomeNavbar = () => {
       <nav className="flex justify-between xl:justify-around items-center fixed sm:absolute h-[55px] w-full bg-black sm:bg-transparent px-2 xl:px-0 z-50">
         {window.innerWidth < 400 ? (
           <Link
+            to="/"
             className="rock-font text-5xl text-[#e50914] font-bold"
             style={{ textShadow: "2px 2px 0 black, -2px -2px 0 black" }}
           >
             N
           </Link>
         ) : (
-          <p
+          <Link
+            to="/"
             className="rock-font text-3xl sm:text-4xl md:text-5xl text-[#e50914] font-bold"
             style={{ textShadow: "2px 2px 0 black, -2px -2px 0 black" }}
           >
             NUTFLUX
-          </p>
+          </Link>
         )}
 
         <div>

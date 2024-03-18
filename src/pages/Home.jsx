@@ -24,7 +24,7 @@ const Home = () => {
             <img
               src={`${backdropBase}${bgRandomMovie?.backdrop_path}`}
               alt={bgRandomMovie?.title}
-              className="w-full h-1/3 object-cover object-left	"
+              className="w-full xl:h-screen object-cover"
             />
             <div className="absolute top-0 left-0 w-full h-full flex justify-center items-end">
               <div className="flex flex-col justify-center items-center w-full bg-gradient-to-t from-black/100 overflow-hidden">

@@ -5,30 +5,51 @@ import { Link } from "react-router-dom";
 
 const CinemaLibrary = ({ cineId, name, url }) => {
   const [cineShows, setCineShows] = useState([]);
+  const [scrollArrowLeft, setScrollArrowLeft] = useState(false);
+  const [scrollArrowRight, setScrollArrowRight] = useState(true);
   const backdropBase = "https://image.tmdb.org/t/p/w500/";
 
   useEffect(() => {
     axios.get(url).then((response) => setCineShows(response.data.results));
   }, [url]);
 
+  const slider = document.getElementById("slider" + cineId);
+
+  const checkScroll = () => {
+    const container = document.getElementById("container");
+    const maxWidthScroll = slider.scrollWidth - container.offsetWidth;
+
+    slider.scrollLeft <= 0
+      ? setScrollArrowLeft(false)
+      : setScrollArrowLeft(true);
+
+    slider.scrollLeft >= maxWidthScroll
+      ? setScrollArrowRight(false)
+      : setScrollArrowRight(true);
+  };
+
   const slideLeft = () => {
-    const slider = document.getElementById("slider" + cineId);
     slider.scrollLeft = slider.scrollLeft - 750;
   };
 
   const slideRight = () => {
-    const slider = document.getElementById("slider" + cineId);
     slider.scrollLeft = slider.scrollLeft + 750;
   };
 
   return (
     <div className="mb-10">
       <h3 className="text-xl sm:text-2xl m-2">{name}</h3>
-      <div className="relative flex items-center">
+      <div id="container" className="relative flex items-center">
         <FaChevronLeft
-          onClick={() => slideLeft()}
+          onClick={() => {
+            slideLeft();
+            checkScroll();
+            setScrollArrowRight(true);
+          }}
           size={20}
-          className="hidden lg:block cursor-pointer mx-2"
+          className={`hidden lg:block ${
+            scrollArrowLeft ? "lg:block" : "lg:hidden"
+          } cursor-pointer mx-2`}
           style={{ color: "#e50914" }}
         />
         <div
@@ -62,9 +83,15 @@ const CinemaLibrary = ({ cineId, name, url }) => {
             )}
         </div>
         <FaChevronRight
-          onClick={() => slideRight()}
+          onClick={() => {
+            slideRight();
+            checkScroll();
+            setScrollArrowLeft(true);
+          }}
           size={20}
-          className="hidden lg:block cursor-pointer mx-2"
+          className={`hidden lg:block ${
+            scrollArrowRight ? "lg:block" : "lg:hidden"
+          } cursor-pointer mx-2`}
           style={{ color: "#e50914" }}
         />
       </div>
