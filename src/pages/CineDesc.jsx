@@ -1,14 +1,44 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { UserAuth } from "../context/AuthContext";
+import { db } from "../firebase";
+import { arrayUnion, doc, updateDoc } from "firebase/firestore";
 import { GoPlus } from "react-icons/go";
 import axios from "axios";
-import urls from "../functions/urls";
+import urls from "../utils/urls";
 
 const CineDesc = () => {
   const [cineShow, setCineShow] = useState({});
   const [genre, setGenre] = useState("");
   const [cast, setCast] = useState([]);
   const [crew, setCrew] = useState([]);
+  const [isSaved, setIsSaved] = useState(false);
+  const { user } = UserAuth();
+
+  const savedId = doc(db, "users", `${user?.email}`);
+
+  const saveCineShow = async () => {
+    if (user) {
+      setIsSaved(!isSaved);
+      await updateDoc(savedId, {
+        savedCineShows: arrayUnion({
+          id: cineShow.id,
+          title: cineShow.title || cineShow.name,
+          tagline: cineShow.tagline,
+          img: cineShow.backdrop_path,
+        }),
+      });
+      alert(
+        `"${
+          cineShow.title || cineShow.name
+        }" has been successfully added to your list`
+      );
+    } else {
+      alert(
+        `Please sign to add "${cineShow.title || cineShow.name}" to your list`
+      );
+    }
+  };
 
   const location = useLocation();
   const cineShowId = location.state.id;
@@ -82,7 +112,7 @@ const CineDesc = () => {
         <div className="relative">
           <img
             src={`${backdropBase}${cineShow?.backdrop_path}`}
-            alt={cineShow?.title}
+            alt={`${cineShow?.title || cineShow?.name} backdrop`}
             className="w-full h-full sm:h-[calc(100vh-55px)] object-cover"
           />
           <div
@@ -108,7 +138,10 @@ const CineDesc = () => {
               <button className="sm:text-lg text-black bg-white border rounded-sm px-3 sm:px-5 py-1 sm:py-2 mr-3">
                 Play
               </button>
-              <button className="flex justify-center items-center sm:text-lg border rounded-sm px-3 py-1 sm:py-2">
+              <button
+                onClick={() => saveCineShow()}
+                className="flex justify-center items-center sm:text-lg border rounded-sm px-3 py-1 sm:py-2"
+              >
                 <GoPlus className="text-xl sm:text-3xl mr-1" />
                 My List
               </button>

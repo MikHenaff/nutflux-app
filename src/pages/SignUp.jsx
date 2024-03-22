@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import BGimg from "../assets/nutflux-bg.jpg";
 import AccountForm from "../components/AccountForm";
+import BGimg from "../assets/nutflux-bg.jpg";
 
 const SignUp = () => {
   return (

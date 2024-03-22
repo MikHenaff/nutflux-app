@@ -1,7 +1,20 @@
-import { Link } from "react-router-dom";
+import { UserAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import BGimg from "../assets/nutflux-bg.jpg";
 
 const SignOut = () => {
+  const { logOut } = UserAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    try {
+      await logOut();
+      navigate("/");
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
   return (
     <div className="relative w-full h-screen">
       <img
@@ -15,18 +28,18 @@ const SignOut = () => {
             Are you sure you want to sign out?
           </p>
           <div className="flex w-4/5">
-            <Link
-              to="/"
+            <button
+              onClick={handleSignOut}
               className="flex justify-center items-center w-full h-10 text-lg rounded-sm border mr-5 hover:bg-white hover:text-black"
             >
               Yes
-            </Link>
-            <Link
-              to="/"
+            </button>
+            <button
+              onClick={() => history.back()}
               className="flex justify-center items-center w-full h-10 text-lg rounded-sm border hover:bg-white hover:text-black"
             >
               No
-            </Link>
+            </button>
           </div>
         </div>
       </div>

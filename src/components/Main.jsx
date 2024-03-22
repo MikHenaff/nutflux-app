@@ -1,4 +1,4 @@
-import urls from "../functions/urls";
+import urls from "../utils/urls";
 import CinemaLibrary from "./CinemaLibrary";
 
 const Main = () => {

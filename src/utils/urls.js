@@ -1,4 +1,4 @@
-const key = "c881bed8d06b3a7601dfb67119e53e5b";
+const key = import.meta.env.VITE_TMDB_API_KEY;
 
 const urls = {
   popularMovies: `https://api.themoviedb.org/3/movie/popular?api_key=${key}&language=en-US&page=1`,

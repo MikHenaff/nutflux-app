@@ -1,7 +1,7 @@
 import BGimg from "../assets/nutflux-bg.jpg";
 import AccountForm from "../components/AccountForm";
 
-const EditAccount = () => {
+const Account = () => {
   return (
     <>
       {window.innerWidth > window.innerHeight && window.innerWidth < 900 ? (
@@ -28,4 +28,4 @@ const EditAccount = () => {
   );
 };
 
-export default EditAccount;
+export default Account;

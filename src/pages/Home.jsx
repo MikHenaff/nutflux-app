@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
+import { UserAuth } from "../context/AuthContext";
 import axios from "axios";
 import Main from "../components/Main";
-import urls from "../functions/urls";
+import urls from "../utils/urls";
 import BGimg from "../assets/nutflux-bg.jpg";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
+  const { user } = UserAuth();
   const backdropBase = "https://image.tmdb.org/t/p/original/";
-  const isLogged = true;
   const bgRandomMovie = movies[Math.floor(Math.random() * movies.length)];
 
   useEffect(() => {
@@ -18,13 +19,13 @@ const Home = () => {
 
   return (
     <>
-      {isLogged ? (
+      {user ? (
         <div className="w-full h-full pt-[55px] sm:pt-0">
           <div className="relative">
             <img
               src={`${backdropBase}${bgRandomMovie?.backdrop_path}`}
               alt={bgRandomMovie?.title}
-              className="w-full xl:h-screen object-cover"
+              className="w-full max-h-[80vh] object-cover"
             />
             <div className="absolute top-0 left-0 w-full h-full flex justify-center items-end">
               <div className="flex flex-col justify-center items-center w-full bg-gradient-to-t from-black/100 overflow-hidden">

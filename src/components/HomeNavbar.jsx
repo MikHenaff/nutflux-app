@@ -1,11 +1,12 @@
+import { UserAuth } from "../context/AuthContext";
 import { Link, NavLink } from "react-router-dom";
 
 const HomeNavbar = () => {
-  const isLogged = true;
+  const { user } = UserAuth();
   return (
     <>
       <nav className="flex justify-between xl:justify-around items-center fixed sm:absolute h-[55px] w-full bg-black sm:bg-transparent px-2 xl:px-0 z-50">
-        {window.innerWidth < 400 ? (
+        {window.innerWidth < 500 ? (
           <Link
             to="/"
             className="rock-font text-5xl text-[#e50914] font-bold"
@@ -24,20 +25,26 @@ const HomeNavbar = () => {
         )}
 
         <div>
-          {isLogged ? (
+          {user ? (
             <>
               <div className="flex items-center">
                 <NavLink
-                  to="signout"
-                  className="text-[13px] sm:text-base border border-[#888] bg-black hover:bg-[#212121] px-3 py-1 mr-5 xl:mr-8 rounded-sm"
+                  to="../account"
+                  className="text-[13px] sm:text-base border border-[#888] bg-black hover:bg-[#212121] px-3 py-1 mr-3 sm:mr-5 xl:mr-8 rounded-sm"
+                >
+                  My List
+                </NavLink>
+                <NavLink
+                  to="../signout"
+                  className="text-[13px] sm:text-base border border-[#888] bg-black hover:bg-[#212121] px-3 py-1 mr-3 sm:mr-5 xl:mr-8 rounded-sm"
                 >
                   Sign Out
                 </NavLink>
                 <NavLink
-                  to="edit-account"
-                  className="text-[13px] sm:text-base border border-[#888] bg-black hover:bg-[#212121] px-3 py-1 mr-5 xl:mr-8 rounded-sm"
+                  to="../delete-account"
+                  className="text-[13px] sm:text-base border border-[#e50914] bg-[#e50914] hover:bg-[#f31217] px-3 py-1 rounded-sm"
                 >
-                  Account
+                  Delete Account
                 </NavLink>
               </div>
             </>
