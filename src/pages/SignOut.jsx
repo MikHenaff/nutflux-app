@@ -10,8 +10,9 @@ const SignOut = () => {
     try {
       await logOut();
       navigate("/");
-    } catch (error) {
-      alert(error.message);
+      alert("You have been successfully logged out!");
+    } catch (e) {
+      alert(e.message);
     }
   };
 

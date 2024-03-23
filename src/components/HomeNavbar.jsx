@@ -5,7 +5,7 @@ const HomeNavbar = () => {
   const { user } = UserAuth();
   return (
     <>
-      <nav className="flex justify-between xl:justify-around items-center fixed sm:absolute h-[55px] w-full bg-black sm:bg-transparent px-2 xl:px-0 z-50">
+      <nav className="flex justify-between xl:justify-around items-center fixed h-[55px] w-full bg-black px-2 xl:px-0 z-50">
         {window.innerWidth < 500 ? (
           <Link
             to="/"
@@ -29,20 +29,14 @@ const HomeNavbar = () => {
             <>
               <div className="flex items-center">
                 <NavLink
-                  to="../account"
-                  className="text-[13px] sm:text-base border border-[#888] bg-black hover:bg-[#212121] px-3 py-1 mr-3 sm:mr-5 xl:mr-8 rounded-sm"
-                >
-                  My List
-                </NavLink>
-                <NavLink
                   to="../signout"
-                  className="text-[13px] sm:text-base border border-[#888] bg-black hover:bg-[#212121] px-3 py-1 mr-3 sm:mr-5 xl:mr-8 rounded-sm"
+                  className="text-[13px] sm:text-base border border-[#888] bg-black hover:bg-[#212121] px-1 sm:px-3 py-1 mr-3 sm:mr-5 xl:mr-8 rounded-sm"
                 >
                   Sign Out
                 </NavLink>
                 <NavLink
                   to="../delete-account"
-                  className="text-[13px] sm:text-base border border-[#e50914] bg-[#e50914] hover:bg-[#f31217] px-3 py-1 rounded-sm"
+                  className="text-[13px] sm:text-base border border-[#e50914] bg-[#e50914] hover:bg-[#f31217] px-1 sm:px-3 py-1 rounded-sm"
                 >
                   Delete Account
                 </NavLink>

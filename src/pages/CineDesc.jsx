@@ -138,13 +138,23 @@ const CineDesc = () => {
               <button className="sm:text-lg text-black bg-white border rounded-sm px-3 sm:px-5 py-1 sm:py-2 mr-3">
                 Play
               </button>
-              <button
-                onClick={() => saveCineShow()}
-                className="flex justify-center items-center sm:text-lg border rounded-sm px-3 py-1 sm:py-2"
-              >
-                <GoPlus className="text-xl sm:text-3xl mr-1" />
-                My List
-              </button>
+              {isSaved ? (
+                <button
+                  onClick={() => saveCineShow()}
+                  className="flex justify-center items-center sm:text-lg border rounded-sm px-3 py-1 sm:py-2"
+                >
+                  <GoPlus className="text-xl sm:text-3xl mr-1" />
+                  Sup from My List
+                </button>
+              ) : (
+                <button
+                  onClick={() => saveCineShow()}
+                  className="flex justify-center items-center sm:text-lg border rounded-sm px-3 py-1 sm:py-2"
+                >
+                  <GoPlus className="text-xl sm:text-3xl mr-1" />
+                  My List
+                </button>
+              )}
             </div>
             <p className="sm:text-xl mb-5">{cineShow?.overview}</p>
             <div className="flex flex-col pb-5">

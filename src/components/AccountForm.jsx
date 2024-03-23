@@ -16,9 +16,11 @@ const AccountForm = ({ content }) => {
       if (window.location.pathname === "/signup") {
         await signUp(email, password);
         navigate("/");
+        alert("Your account has been successfully created!");
       } else if (window.location.pathname === "/signin") {
         await signIn(email, password);
         navigate("/");
+        alert("You are now logged in!");
       } else if (window.location.pathname === "/account") {
         await signIn(email, password);
         navigate("/");

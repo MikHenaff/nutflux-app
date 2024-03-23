@@ -1,9 +1,33 @@
 import urls from "../utils/urls";
 import CinemaLibrary from "./CinemaLibrary";
+import { db } from "../firebase";
+import { collection, getDocs } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import List from "./List";
 
 const Main = () => {
+  const [list, setList] = useState([]);
+
+  useEffect(() => {
+    const getList = async () => {
+      let coll = [];
+      try {
+        const querySnapshot = await getDocs(collection(db, "users"));
+        querySnapshot.forEach((doc) => {
+          coll.push(doc.data().savedCineShows);
+        });
+        setList(coll[0]);
+      } catch (e) {
+        console.log(e.message);
+      }
+    };
+    getList();
+  }, []);
+
   return (
     <>
+      {/*{list.length > 0 && <List list={list} />}*/}
+      <List list={list} name="My List" />
       <h2 className="text-3xl sm:text-4xl lg:text-5xl mx-2 my-10 sm:my-14 lg:my-16 tracking-widest rock-font font-bold text-[#e50914]">
         Movies
       </h2>
