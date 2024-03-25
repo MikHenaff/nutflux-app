@@ -16,6 +16,7 @@ const urls = {
   baseMovieUrlById: "https://api.themoviedb.org/3/movie/",
   baseTVShowUrlById: "https://api.themoviedb.org/3/tv/",
   endUrlById: `?api_key=${key}&language=en-US&append_to_response=credits`,
+  endVideoUrl: `/videos?api_key=${key}&language=en-US`,
 };
 
 export default urls;

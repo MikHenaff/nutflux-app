@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { db } from "../firebase";
-import { arrayUnion, doc, updateDoc } from "firebase/firestore";
+import { arrayUnion, doc, updateDoc, arrayRemove } from "firebase/firestore";
 import { GoPlus } from "react-icons/go";
+import { MdPlaylistRemove } from "react-icons/md";
 import axios from "axios";
 import urls from "../utils/urls";
 
@@ -12,41 +13,29 @@ const CineDesc = () => {
   const [genre, setGenre] = useState("");
   const [cast, setCast] = useState([]);
   const [crew, setCrew] = useState([]);
-  const [isSaved, setIsSaved] = useState(false);
+  const [videoKeys, setVideoKeys] = useState([]);
   const { user } = UserAuth();
 
-  const savedId = doc(db, "users", `${user?.email}`);
-
-  const saveCineShow = async () => {
-    if (user) {
-      setIsSaved(!isSaved);
-      await updateDoc(savedId, {
-        savedCineShows: arrayUnion({
-          id: cineShow.id,
-          title: cineShow.title || cineShow.name,
-          tagline: cineShow.tagline,
-          img: cineShow.backdrop_path,
-        }),
-      });
-      alert(
-        `"${
-          cineShow.title || cineShow.name
-        }" has been successfully added to your list`
-      );
-    } else {
-      alert(
-        `Please sign to add "${cineShow.title || cineShow.name}" to your list`
-      );
-    }
-  };
+  //console.log(cineShow);
 
   const location = useLocation();
   const cineShowId = location.state.id;
-  const cineShowType = location.state.type;
+  const cineShowRow = location.state.row;
+  const cineShowList = location.state.list;
+  const cineShowListType = location.state.type;
+  const cineShowType = cineShowRow < 7 ? "movie" : "tvshow";
+
   const cineShowUrl =
-    cineShowType < 7
+    cineShowType === "movie" || cineShowListType === "movie"
       ? urls.baseMovieUrlById + cineShowId + urls.endUrlById
       : urls.baseTVShowUrlById + cineShowId + urls.endUrlById;
+
+  const videoUrl =
+    cineShowType === "movie" || cineShowListType === "movie"
+      ? urls.baseMovieUrlById + cineShowId + urls.endVideoUrl
+      : urls.baseTVShowUrlById + cineShowId + urls.endVideoUrl;
+
+  //const videoLink = `https://www.yout-ube.com/watch?v=${videoKeys[0]}`;
 
   let actors =
     cast && cast.length > 2
@@ -68,7 +57,7 @@ const CineDesc = () => {
       : false;
 
   let directors =
-    cineShowType < 7
+    cineShowRow === "movie"
       ? crew
           .filter((person) => person.job === "Director")
           .map((person) => person.name)
@@ -81,7 +70,7 @@ const CineDesc = () => {
       : false;
 
   let creators =
-    cineShowType > 6
+    cineShowType === "tvshow"
       ? cineShow.created_by?.map((creator) => creator.name)
       : false;
   creators =
@@ -99,12 +88,92 @@ const CineDesc = () => {
 
   useEffect(() => {
     axios.get(cineShowUrl).then((response) => {
+      cineShowList &&
+        cineShowList.map((res) => {
+          if (res.id === response.data.id) {
+            console.log("same id");
+          } else {
+            console.log("not same id");
+          }
+        });
       setCineShow(response.data);
       setGenre(response.data.genres[0].name);
       setCast(response.data.credits.cast);
       setCrew(response.data.credits.crew);
     });
-  }, [cineShowUrl]);
+  }, [cineShowUrl, cineShowList]);
+
+  useEffect(() => {
+    const playVideo = async () => {
+      setVideoKeys([]);
+      const response = await axios.get(videoUrl);
+      const results = await response.data.results;
+      setVideoKeys(
+        results
+          .filter((res) => {
+            if (
+              res.site === "YouTube" &&
+              res.official === true &&
+              res.type === "Trailer"
+            )
+              return res;
+          })
+          .map((res) => res.key)
+      );
+    };
+    playVideo();
+  }, [videoUrl]);
+
+  const cineShowRef = doc(db, "users", `${user?.email}`);
+
+  const saveCineShow = async () => {
+    if (user) {
+      setCineShow({ ...cineShow, isSaved: true });
+      await updateDoc(cineShowRef, {
+        savedCineShows: arrayUnion({
+          id: cineShow.id,
+          title: cineShow.title || cineShow.name,
+          type: cineShowType,
+          tagline: cineShow.tagline,
+          img: cineShow.backdrop_path,
+        }),
+      });
+      alert(
+        `"${
+          cineShow.title || cineShow.name
+        }" has been successfully added to your list`
+      );
+    } else {
+      alert(
+        `Please sign to add "${cineShow.title || cineShow.name}" to your list`
+      );
+    }
+  };
+
+  const deleteCineShow = async () => {
+    if (user) {
+      try {
+        await updateDoc(cineShowRef, {
+          savedCineShows: arrayRemove({
+            id: cineShow.id,
+            title: cineShow.title || cineShow.name,
+            type: cineShowType,
+            tagline: cineShow.tagline,
+            img: cineShow.backdrop_path,
+          }),
+        });
+        setCineShow({ ...cineShow, isSaved: false });
+      } catch (e) {
+        console.log(e.message);
+      }
+    } else {
+      alert(
+        `Please sign to remove "${
+          cineShow.title || cineShow.name
+        }" from your list`
+      );
+    }
+  };
 
   return (
     <div>
@@ -135,16 +204,20 @@ const CineDesc = () => {
               | {genre}
             </p>
             <div className="flex pb-5">
-              <button className="sm:text-lg text-black bg-white border rounded-sm px-3 sm:px-5 py-1 sm:py-2 mr-3">
-                Play
-              </button>
-              {isSaved ? (
+              {/*{videoKeys.length > 0 && (*/}
+              {/*//<button className="sm:text-lg text-black bg-white border rounded-sm px-3 sm:px-5 py-1 sm:py-2 mr-3">
+                //  <a href={videoLink} target="_blank" rel="noreferrer">
+                //    Play
+                //  </a>
+                //</button>*/}
+              {/*)}*/}
+              {cineShow.isSaved ? (
                 <button
-                  onClick={() => saveCineShow()}
-                  className="flex justify-center items-center sm:text-lg border rounded-sm px-3 py-1 sm:py-2"
+                  onClick={() => deleteCineShow()}
+                  className="flex justify-center items-center sm:text-lg border border-[#e50914] bg-[#e50914] hover:bg-[#f31217] rounded-sm px-3 py-1 sm:py-2"
                 >
-                  <GoPlus className="text-xl sm:text-3xl mr-1" />
-                  Sup from My List
+                  <MdPlaylistRemove className="text-xl sm:text-3xl" />
+                  {/*Sup from My List*/}
                 </button>
               ) : (
                 <button
@@ -164,7 +237,7 @@ const CineDesc = () => {
                   {actors}
                 </p>
               )}
-              {cineShowType < 7
+              {cineShowRow < 7
                 ? directors && (
                     <p>
                       <span className="text-[#999]">Directed by:&nbsp;</span>

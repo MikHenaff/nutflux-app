@@ -3,7 +3,7 @@ import axios from "axios";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const CinemaLibrary = ({ cineId, name, url }) => {
+const CinemaLibrary = ({ rowId, name, url }) => {
   const [cineShows, setCineShows] = useState([]);
   const [scrollArrowLeft, setScrollArrowLeft] = useState(false);
   const [scrollArrowRight, setScrollArrowRight] = useState(true);
@@ -13,7 +13,7 @@ const CinemaLibrary = ({ cineId, name, url }) => {
     axios.get(url).then((response) => setCineShows(response.data.results));
   }, [url]);
 
-  const slider = document.getElementById("slider" + cineId);
+  const slider = document.getElementById("slider" + rowId);
 
   const checkScroll = () => {
     const container = document.getElementById("container");
@@ -53,7 +53,7 @@ const CinemaLibrary = ({ cineId, name, url }) => {
           style={{ color: "#e50914" }}
         />
         <div
-          id={"slider" + cineId}
+          id={"slider" + rowId}
           className="w-full h-full overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
         >
           {cineShows &&
@@ -65,7 +65,7 @@ const CinemaLibrary = ({ cineId, name, url }) => {
                     to="../cine-desc"
                     state={{
                       id: cineShow.id,
-                      type: cineId,
+                      row: rowId,
                     }}
                     key={cineShow.id}
                     className="relative w-[150px] sm:w-[200px] md:w-[250px] lg:w-[300px] inline-block cursor-pointer m-2"

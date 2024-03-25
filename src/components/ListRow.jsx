@@ -51,13 +51,15 @@ const List = ({ list, name }) => {
         >
           {list &&
             list.map(
-              (cineShow) =>
+              (cineShow, idx, array) =>
                 (cineShow.title || cineShow.name) &&
                 cineShow.img && (
                   <Link
                     to="../cine-desc"
                     state={{
                       id: cineShow.id,
+                      type: cineShow.type,
+                      list: array,
                     }}
                     key={cineShow.id}
                     className="relative w-[150px] sm:w-[200px] md:w-[250px] lg:w-[300px] inline-block cursor-pointer m-2"
