@@ -1,6 +1,6 @@
 import { UserAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import BGimg from "../assets/nutflux-bg.jpg";
+import BGimg from "../assets/img/nutflux-bg.jpg";
 
 const SignOut = () => {
   const { logOut } = UserAuth();

@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const List = ({ list, name }) => {
   const [scrollArrowLeft, setScrollArrowLeft] = useState(false);

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
-import AccountForm from "../components/AccountForm";
-import BGimg from "../assets/nutflux-bg.jpg";
+import UserForm from "../components/UserForm";
+import BGimg from "../assets/img/nutflux-bg.jpg";
 
 const SignUp = () => {
   return (
@@ -9,7 +9,7 @@ const SignUp = () => {
         <div className="flex flex-col justify-center w-full h-screen">
           <div className="m-auto w-96">
             <h1 className="text-3xl pb-4 md:pb-6 pt-8 md:pt-10">Sign Up</h1>
-            <AccountForm content="Sign Up" />
+            <UserForm content="Sign Up" />
             <p className="text-center">
               <span className="text-[#9db9bb] pb-4">Already a member?</span>{" "}
               <Link to="../signin" className="hover:underline">
@@ -28,7 +28,7 @@ const SignUp = () => {
           />
           <div className="m-auto sm:absolute sm:top-1/2 sm:left-1/2 sm:translate-x-[-50%] sm:translate-y-[-50%] w-[90%] sm:w-96 sm:h-fit sm:bg-black/70 sm:p-10 rounded-sm">
             <h1 className="self-start text-3xl mb-9">Sign Up</h1>
-            <AccountForm content="Sign Up" />
+            <UserForm content="Sign Up" />
             <p className="text-center pt-4">
               <span className="text-[#9db9bb]">Already a member?</span>{" "}
               <Link to="../signin" className="hover:underline">

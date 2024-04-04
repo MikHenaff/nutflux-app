@@ -35,10 +35,10 @@ const HomeNavbar = () => {
                   Sign Out
                 </NavLink>
                 <NavLink
-                  to="../delete-account"
+                  to="../account"
                   className="text-[13px] sm:text-base border border-[#e50914] bg-[#e50914] hover:bg-[#f31217] px-1 sm:px-3 py-1 rounded-sm"
                 >
-                  Delete Account
+                  Account
                 </NavLink>
               </div>
             </>

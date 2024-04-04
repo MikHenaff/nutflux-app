@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { Link } from "react-router-dom";
 
-const CinemaLibrary = ({ rowId, name, url }) => {
+const CineShowRow = ({ rowId, name, url }) => {
   const [cineShows, setCineShows] = useState([]);
   const [scrollArrowLeft, setScrollArrowLeft] = useState(false);
   const [scrollArrowRight, setScrollArrowRight] = useState(true);
+
   const backdropBase = "https://image.tmdb.org/t/p/w500/";
 
   useEffect(() => {
@@ -99,4 +100,4 @@ const CinemaLibrary = ({ rowId, name, url }) => {
   );
 };
 
-export default CinemaLibrary;
+export default CineShowRow;

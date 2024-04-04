@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 
-const SignNavbar = () => {
+const UserFormNavbar = () => {
   return (
     <>
       <div className="flex items-center absolute w-full p-[10px] z-50">
@@ -25,4 +25,4 @@ const SignNavbar = () => {
   );
 };
 
-export default SignNavbar;
+export default UserFormNavbar;

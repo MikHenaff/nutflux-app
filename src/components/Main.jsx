@@ -1,9 +1,9 @@
-import urls from "../utils/urls";
-import CinemaLibrary from "./CinemaLibrary";
+import { useEffect, useState } from "react";
 import { db } from "../firebase";
 import { collection, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import CineShowRow from "./CineShowRow";
 import ListRow from "./ListRow";
+import urls from "../utils/urls";
 
 const Main = () => {
   const [list, setList] = useState([]);
@@ -30,16 +30,16 @@ const Main = () => {
       <h2 className="text-3xl sm:text-4xl lg:text-5xl mx-2 my-10 sm:my-14 lg:my-16 tracking-widest rock-font font-bold text-[#e50914]">
         Movies
       </h2>
-      <CinemaLibrary
+      <CineShowRow
         rowId="1"
         name="Popular on Nutflux"
         url={urls.popularMovies}
       />
-      <CinemaLibrary rowId="2" name="Top Rated" url={urls.topRatedMovies} />
-      <CinemaLibrary rowId="3" name="Horror" url={urls.horrorMovies} />
-      <CinemaLibrary rowId="4" name="Sci-Fi" url={urls.scifiMovies} />
-      <CinemaLibrary rowId="5" name="Animation" url={urls.animationMovies} />
-      <CinemaLibrary
+      <CineShowRow rowId="2" name="Top Rated" url={urls.topRatedMovies} />
+      <CineShowRow rowId="3" name="Horror" url={urls.horrorMovies} />
+      <CineShowRow rowId="4" name="Sci-Fi" url={urls.scifiMovies} />
+      <CineShowRow rowId="5" name="Animation" url={urls.animationMovies} />
+      <CineShowRow
         rowId="6"
         name="Documentaries"
         url={urls.documentaryMovies}
@@ -47,20 +47,20 @@ const Main = () => {
       <h2 className="text-3xl sm:text-4xl lg:text-5xl mx-2 my-14 sm:my-16 tracking-widest rock-font font-bold text-[#e50914]">
         TV Shows
       </h2>
-      <CinemaLibrary
+      <CineShowRow
         rowId="7"
         name="Trending on Nutflux"
         url={urls.trendingTVShows}
       />
-      <CinemaLibrary rowId="8" name="Top Rated" url={urls.topRatedTVShows} />
-      <CinemaLibrary
+      <CineShowRow rowId="8" name="Top Rated" url={urls.topRatedTVShows} />
+      <CineShowRow
         rowId="9"
         name="Sci-Fi & Fantasy"
         url={urls.scififantasyTVShows}
       />
-      <CinemaLibrary rowId="10" name="Crime" url={urls.crimeTVShows} />
-      <CinemaLibrary rowId="11" name="Drama" url={urls.dramaTVShows} />
-      <CinemaLibrary
+      <CineShowRow rowId="10" name="Crime" url={urls.crimeTVShows} />
+      <CineShowRow rowId="11" name="Drama" url={urls.dramaTVShows} />
+      <CineShowRow
         rowId="12"
         name="Documentaries"
         url={urls.documentaryTVShows}

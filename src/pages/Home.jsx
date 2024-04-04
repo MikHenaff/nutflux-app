@@ -3,11 +3,12 @@ import { UserAuth } from "../context/AuthContext";
 import axios from "axios";
 import Main from "../components/Main";
 import urls from "../utils/urls";
-import BGimg from "../assets/nutflux-bg.jpg";
+import BGimg from "../assets/img/nutflux-bg.jpg";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
   const { user } = UserAuth();
+
   const backdropBase = "https://image.tmdb.org/t/p/original/";
   const bgRandomMovie = movies[Math.floor(Math.random() * movies.length)];
 
@@ -20,7 +21,7 @@ const Home = () => {
   return (
     <>
       {user ? (
-        <div className="w-full h-full pt-[55px]">
+        <div id="page" className="w-full h-full pt-[55px]">
           <div className="relative">
             <img
               src={`${backdropBase}${bgRandomMovie?.backdrop_path}`}

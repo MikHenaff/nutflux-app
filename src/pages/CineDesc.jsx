@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { db } from "../firebase";
 import { arrayUnion, doc, updateDoc, arrayRemove } from "firebase/firestore";
-import { GoPlus } from "react-icons/go";
-import { MdPlaylistRemove } from "react-icons/md";
 import axios from "axios";
 import urls from "../utils/urls";
+import { GoPlus } from "react-icons/go";
+import { MdPlaylistRemove } from "react-icons/md";
 
 const CineDesc = () => {
   const [cineShow, setCineShow] = useState({});
@@ -15,11 +15,14 @@ const CineDesc = () => {
   const [crew, setCrew] = useState([]);
   const [videoKeys, setVideoKeys] = useState([]);
   const { user } = UserAuth();
+  const navigate = useNavigate();
 
   //console.log(cineShow);
 
   const location = useLocation();
+  //const previousScroll = location.state.scroll;
   const cineShowId = location.state.id;
+  //console.log(previousScroll, cineShowId);
   const cineShowRow = location.state.row;
   const cineShowList = location.state.list;
   const cineShowListType = location.state.type;
@@ -35,7 +38,7 @@ const CineDesc = () => {
       ? urls.baseMovieUrlById + cineShowId + urls.endVideoUrl
       : urls.baseTVShowUrlById + cineShowId + urls.endVideoUrl;
 
-  //const videoLink = `https://www.yout-ube.com/watch?v=${videoKeys[0]}`;
+  const videoLink = `https://www.yout-ube.com/watch?v=${videoKeys[0]}`;
 
   let actors =
     cast && cast.length > 2
@@ -129,15 +132,19 @@ const CineDesc = () => {
   const saveCineShow = async () => {
     if (user) {
       setCineShow({ ...cineShow, isSaved: true });
-      await updateDoc(cineShowRef, {
-        savedCineShows: arrayUnion({
-          id: cineShow.id,
-          title: cineShow.title || cineShow.name,
-          type: cineShowType,
-          tagline: cineShow.tagline,
-          img: cineShow.backdrop_path,
-        }),
-      });
+      try {
+        await updateDoc(cineShowRef, {
+          savedCineShows: arrayUnion({
+            id: cineShow.id,
+            title: cineShow.title || cineShow.name,
+            type: cineShowType,
+            tagline: cineShow.tagline,
+            img: cineShow.backdrop_path,
+          }),
+        });
+      } catch (e) {
+        console.log(e.message);
+      }
       alert(
         `"${
           cineShow.title || cineShow.name
@@ -163,6 +170,11 @@ const CineDesc = () => {
           }),
         });
         setCineShow({ ...cineShow, isSaved: false });
+        alert(
+          `"${
+            cineShow.title || cineShow.name
+          }" has been successfully removed from your list`
+        );
       } catch (e) {
         console.log(e.message);
       }
@@ -204,20 +216,19 @@ const CineDesc = () => {
               | {genre}
             </p>
             <div className="flex pb-5">
-              {/*{videoKeys.length > 0 && (*/}
-              {/*//<button className="sm:text-lg text-black bg-white border rounded-sm px-3 sm:px-5 py-1 sm:py-2 mr-3">
-                //  <a href={videoLink} target="_blank" rel="noreferrer">
-                //    Play
-                //  </a>
-                //</button>*/}
-              {/*)}*/}
+              {videoKeys.length > 0 && (
+                <button className="sm:text-lg text-black bg-white border rounded-sm px-3 sm:px-5 py-1 sm:py-2 mr-3">
+                  <a href={videoLink} target="_blank" rel="noreferrer">
+                    Play
+                  </a>
+                </button>
+              )}
               {cineShow.isSaved ? (
                 <button
                   onClick={() => deleteCineShow()}
                   className="flex justify-center items-center sm:text-lg border border-[#e50914] bg-[#e50914] hover:bg-[#f31217] rounded-sm px-3 py-1 sm:py-2"
                 >
                   <MdPlaylistRemove className="text-xl sm:text-3xl" />
-                  {/*Sup from My List*/}
                 </button>
               ) : (
                 <button
@@ -253,7 +264,10 @@ const CineDesc = () => {
             </div>
             <div>
               <button
-                onClick={() => history.back()}
+                onClick={() => {
+                  navigate("/");
+                  //history.back();
+                }}
                 className="text-sm border rounded-sm px-3 py-2"
               >
                 Go Back
