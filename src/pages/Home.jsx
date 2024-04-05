@@ -21,7 +21,10 @@ const Home = () => {
   return (
     <>
       {user ? (
-        <div id="page" className="w-full h-full pt-[55px]">
+        <div
+          id="page"
+          className={`w-full h-full ${window.innerWidth < 500 && "pt-[55px]"}`}
+        >
           <div className="relative">
             <img
               src={`${backdropBase}${bgRandomMovie?.backdrop_path}`}

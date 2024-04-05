@@ -10,16 +10,9 @@ import {
   updatePassword,
   deleteUser,
 } from "firebase/auth";
-import {
-  doc,
-  setDoc,
-  getDoc,
-  getDocs,
-  deleteDoc,
-  collection,
-} from "firebase/firestore";
+import { doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
 
-const UserForm = ({ content }) => {
+const UserForm = ({ content, isChangingCreds, isDeletingAccount }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [newEmail, setNewEmail] = useState("");
@@ -44,14 +37,13 @@ const UserForm = ({ content }) => {
         await signIn(email, password);
         navigate("/");
         alert("You are now logged in!");
-      } else if (window.location.pathname === "/account") {
+      } else if (
+        window.location.pathname === "/change-account" &&
+        isChangingCreds
+      ) {
         const credential = EmailAuthProvider.credential(email, password);
         await reauthenticateWithCredential(user, credential);
         const oldEmail = user.email;
-        //await deleteUser(user);
-        //await deleteDoc(doc(db, "users", user.email));
-        //await signUp(newEmail, newPassword);
-
         const docRef = doc(db, "users", user.email);
         const docSnap = await getDoc(docRef);
         let data;
@@ -60,7 +52,6 @@ const UserForm = ({ content }) => {
           data = docSnap.data();
           data.savedCineShows.map((item) => newData.push(item));
         }
-
         await updateEmail(user, newEmail);
         await setDoc(doc(db, "users", newEmail), {
           savedCineShows: [...newData],
@@ -71,6 +62,15 @@ const UserForm = ({ content }) => {
         await updatePassword(user, newPassword);
         navigate("/");
         alert("You're account has been successfully updated!");
+      } else if (
+        window.location.pathname === "/change-account" &&
+        isDeletingAccount
+      ) {
+        const credential = EmailAuthProvider.credential(email, password);
+        await reauthenticateWithCredential(user, credential);
+        await deleteUser(user);
+        await deleteDoc(doc(db, "users", user.email));
+        alert("You're account has been successfully deleted!");
       }
     } catch (error) {
       setError(error.message);
@@ -89,9 +89,9 @@ const UserForm = ({ content }) => {
         <input
           onChange={(e) => setEmail(e.target.value)}
           type="email"
-          className="h-12 rounded-sm bg-[#0f0f0f] border border-[#888] mb-5 pl-2"
+          className="z-50 h-12 rounded-sm bg-[#0f0f0f] border border-[#888] mb-5 pl-2"
           placeholder={
-            window.location.pathname === "/account"
+            window.location.pathname === "/change-account" && isChangingCreds
               ? "Current Email Address ..."
               : "Email Address ..."
           }
@@ -100,15 +100,15 @@ const UserForm = ({ content }) => {
         <input
           onChange={(e) => setPassword(e.target.value)}
           type="password"
-          className="h-12 rounded-sm bg-[#0f0f0f] border border-[#888] mb-5 pl-2"
+          className="z-50 h-12 rounded-sm bg-[#0f0f0f] border border-[#888] mb-5 pl-2"
           placeholder={
-            window.location.pathname === "/account"
+            window.location.pathname === "/change-account" && isChangingCreds
               ? "Current Password ..."
               : "Password ..."
           }
           autoComplete="current-password"
         />
-        {window.location.pathname === "/account" && (
+        {window.location.pathname === "/change-account" && isChangingCreds && (
           <>
             <input
               onChange={(e) => setNewEmail(e.target.value)}
@@ -128,12 +128,12 @@ const UserForm = ({ content }) => {
           </>
         )}
         <div className="flex w-full justify-around">
-          <button
-            type="button"
-            className="w-1/2 h-8 rounded-sm bg-[#888] hover:bg-[#8f8f8f] text-[#0f0f0f] mr-2 mb-5"
+          <Link
+            to="../"
+            className="flex justify-center items-center w-1/2 h-8 rounded-sm bg-[#888] hover:bg-[#8f8f8f] text-[#0f0f0f] mr-2 mb-5"
           >
-            <Link to="../">Cancel</Link>
-          </button>
+            Cancel
+          </Link>
           <button className="w-1/2 h-8 rounded-sm bg-[#e50914] hover:bg-[#f31217] ml-2 mb-5">
             {content}
           </button>

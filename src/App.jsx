@@ -6,9 +6,10 @@ import SignIn from "./pages/SignIn";
 import SignOut from "./pages/SignOut";
 import Account from "./pages/Account";
 import CineDesc from "./pages/CineDesc";
-import HomeNavbar from "./components/HomeNavbar";
-import UserFormNavbar from "./components/UserFormNavbar";
+import Navbar from "./components/Navbar";
+//import UserFormNavbar from "./components/UserFormNavbar";
 import PrivateRoute from "./utils/PrivateRoute";
+import ChangeAccount from "./pages/ChangeAccount";
 //import { useEffect } from "react";
 
 const router = createBrowserRouter([
@@ -16,7 +17,7 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <>
-        <HomeNavbar />
+        <Navbar />
         <Home />
       </>
     ),
@@ -25,7 +26,8 @@ const router = createBrowserRouter([
     path: "/signup",
     element: (
       <>
-        <UserFormNavbar />
+        {/*<UserFormNavbar />*/}
+        <Navbar />
         <SignUp />
       </>
     ),
@@ -34,7 +36,8 @@ const router = createBrowserRouter([
     path: "/signin",
     element: (
       <>
-        <UserFormNavbar />
+        {/*<UserFormNavbar />*/}
+        <Navbar />
         <SignIn />
       </>
     ),
@@ -43,7 +46,8 @@ const router = createBrowserRouter([
     path: "/signout",
     element: (
       <>
-        <UserFormNavbar />
+        {/*<UserFormNavbar />*/}
+        <Navbar />
         <SignOut />
       </>
     ),
@@ -52,9 +56,22 @@ const router = createBrowserRouter([
     path: "/account",
     element: (
       <>
-        <UserFormNavbar />
+        {/*<UserFormNavbar />*/}
+        <Navbar />
         <PrivateRoute>
           <Account />
+        </PrivateRoute>
+      </>
+    ),
+  },
+  {
+    path: "/change-account",
+    element: (
+      <>
+        {/*<UserFormNavbar />*/}
+        <Navbar />
+        <PrivateRoute>
+          <ChangeAccount />
         </PrivateRoute>
       </>
     ),
@@ -63,7 +80,7 @@ const router = createBrowserRouter([
     path: "/cine-desc",
     element: (
       <>
-        <HomeNavbar />
+        <Navbar />
         <CineDesc />
       </>
     ),

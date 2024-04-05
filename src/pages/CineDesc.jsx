@@ -189,12 +189,12 @@ const CineDesc = () => {
 
   return (
     <div>
-      <div className="w-full h-full pt-[55px]">
+      <div className="w-full h-full">
         <div className="relative">
           <img
             src={`${backdropBase}${cineShow?.backdrop_path}`}
             alt={`${cineShow?.title || cineShow?.name} backdrop`}
-            className="w-full h-full sm:h-[calc(100vh-55px)] object-cover"
+            className="w-full h-full sm:h-screen object-cover pt-[55px] sm:pt-0"
           />
           <div
             className="sm:absolute top-0 left-0 bg-gradient-to-r from-black/100 to-black/0 w-full sm:w-2/3 lg:w-1/2 2xl:w-1/3

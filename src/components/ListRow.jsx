@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
@@ -7,7 +7,13 @@ const List = ({ list, name }) => {
   const [scrollArrowRight, setScrollArrowRight] = useState(true);
   const backdropBase = "https://image.tmdb.org/t/p/w500/";
 
+  //window.innerWidth
+
   const slider = document.getElementById("slider");
+
+  //useLayoutEffect(() => {
+  //  slider.scrollWidth < window.innerWidth ? setScrollArrowRight(false) : null;
+  //}, []);
 
   const checkScroll = () => {
     const container = document.getElementById("container");
@@ -47,7 +53,7 @@ const List = ({ list, name }) => {
         />
         <div
           id="slider"
-          className="w-full h-full overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
+          className="w-fit h-full overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
         >
           {list &&
             list.map(
