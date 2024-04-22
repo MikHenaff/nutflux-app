@@ -1,22 +1,26 @@
 import { useEffect, useState } from "react";
+import { UserAuth } from "../context/AuthContext";
 import { db } from "../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import CineShowRow from "./CineShowRow";
 import ListRow from "./ListRow";
 import urls from "../utils/urls";
 
 const Main = () => {
   const [list, setList] = useState([]);
+  const { user } = UserAuth();
+
+  const cineShowRef = doc(db, "users", `${user?.email}`);
 
   useEffect(() => {
     const getList = async () => {
       let coll = [];
       try {
-        const querySnapshot = await getDocs(collection(db, "users"));
-        querySnapshot.forEach((doc) => {
-          coll.push(doc.data().savedCineShows);
-        });
-        setList(coll[0]);
+        const docSnap = await getDoc(cineShowRef);
+        if (docSnap.exists()) {
+          coll.push(docSnap.data().savedCineShows);
+          setList(coll[0]);
+        }
       } catch (e) {
         console.log(e.message);
       }

@@ -1,21 +1,14 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 
 const List = ({ list, name }) => {
   const [scrollArrowLeft, setScrollArrowLeft] = useState(false);
-  const [scrollArrowRight, setScrollArrowRight] = useState(true);
+  const [scrollArrowRight, setScrollArrowRight] = useState(false);
   const backdropBase = "https://image.tmdb.org/t/p/w500/";
 
-  //window.innerWidth
-
-  const slider = document.getElementById("slider");
-
-  //useLayoutEffect(() => {
-  //  slider.scrollWidth < window.innerWidth ? setScrollArrowRight(false) : null;
-  //}, []);
-
   const checkScroll = () => {
+    const slider = document.getElementById("slider");
     const container = document.getElementById("container");
     const maxWidthScroll = slider.scrollWidth - container.offsetWidth;
 
@@ -23,10 +16,18 @@ const List = ({ list, name }) => {
       ? setScrollArrowLeft(false)
       : setScrollArrowLeft(true);
 
+    maxWidthScroll > 0 ? setScrollArrowRight(true) : setScrollArrowRight(false);
+
     slider.scrollLeft >= maxWidthScroll
       ? setScrollArrowRight(false)
       : setScrollArrowRight(true);
   };
+
+  useEffect(() => {
+    checkScroll();
+  }, []);
+
+  const slider = document.getElementById("slider");
 
   const slideLeft = () => {
     slider.scrollLeft = slider.scrollLeft - 750;
@@ -35,6 +36,7 @@ const List = ({ list, name }) => {
   const slideRight = () => {
     slider.scrollLeft = slider.scrollLeft + 750;
   };
+
   return (
     <div className="my-10">
       <h3 className="text-xl sm:text-2xl m-2">{name}</h3>
@@ -53,11 +55,11 @@ const List = ({ list, name }) => {
         />
         <div
           id="slider"
-          className="w-fit h-full overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
+          className="w-full h-full overflow-x-scroll scroll-smooth whitespace-nowrap scrollbar-hide"
         >
           {list &&
             list.map(
-              (cineShow, idx, array) =>
+              (cineShow) =>
                 (cineShow.title || cineShow.name) &&
                 cineShow.img && (
                   <Link
@@ -65,7 +67,6 @@ const List = ({ list, name }) => {
                     state={{
                       id: cineShow.id,
                       type: cineShow.type,
-                      list: array,
                     }}
                     key={cineShow.id}
                     className="relative w-[150px] sm:w-[200px] md:w-[250px] lg:w-[300px] inline-block cursor-pointer m-2"
@@ -91,7 +92,7 @@ const List = ({ list, name }) => {
           size={20}
           className={`hidden lg:block ${
             scrollArrowRight ? "lg:block" : "lg:hidden"
-          } cursor-pointer mx-2`}
+          } cursor-pointer mx-2 `}
           style={{ color: "#e50914" }}
         />
       </div>

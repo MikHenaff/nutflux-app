@@ -7,10 +7,8 @@ import SignOut from "./pages/SignOut";
 import Account from "./pages/Account";
 import CineDesc from "./pages/CineDesc";
 import Navbar from "./components/Navbar";
-//import UserFormNavbar from "./components/UserFormNavbar";
 import PrivateRoute from "./utils/PrivateRoute";
 import ChangeAccount from "./pages/ChangeAccount";
-//import { useEffect } from "react";
 
 const router = createBrowserRouter([
   {
@@ -26,7 +24,6 @@ const router = createBrowserRouter([
     path: "/signup",
     element: (
       <>
-        {/*<UserFormNavbar />*/}
         <Navbar />
         <SignUp />
       </>
@@ -36,7 +33,6 @@ const router = createBrowserRouter([
     path: "/signin",
     element: (
       <>
-        {/*<UserFormNavbar />*/}
         <Navbar />
         <SignIn />
       </>
@@ -46,7 +42,6 @@ const router = createBrowserRouter([
     path: "/signout",
     element: (
       <>
-        {/*<UserFormNavbar />*/}
         <Navbar />
         <SignOut />
       </>
@@ -56,7 +51,6 @@ const router = createBrowserRouter([
     path: "/account",
     element: (
       <>
-        {/*<UserFormNavbar />*/}
         <Navbar />
         <PrivateRoute>
           <Account />
@@ -68,7 +62,6 @@ const router = createBrowserRouter([
     path: "/change-account",
     element: (
       <>
-        {/*<UserFormNavbar />*/}
         <Navbar />
         <PrivateRoute>
           <ChangeAccount />
@@ -92,23 +85,6 @@ const router = createBrowserRouter([
 ]);
 
 function App() {
-  //const location = useLocation();
-  //const { pathname } = location;
-  //console.log(window.location.pathname);
-
-  //console.log(window.history);
-
-  if (window.history.scrollRestoration === "auto") {
-    window.history.scrollRestoration = "manual";
-  }
-
-  //useEffect(() => {
-  //  addEventListener("scroll", () => {
-  //    if (window.scrollY)
-  //      sessionStorage.setItem(window.location.pathname, window.scrollY);
-  //  });
-  //});
-
   return (
     <>
       <AuthContextProvider>

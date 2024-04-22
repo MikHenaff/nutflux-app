@@ -2,7 +2,13 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
 import { db } from "../firebase";
-import { arrayUnion, doc, updateDoc, arrayRemove } from "firebase/firestore";
+import {
+  arrayUnion,
+  doc,
+  getDoc,
+  updateDoc,
+  arrayRemove,
+} from "firebase/firestore";
 import axios from "axios";
 import urls from "../utils/urls";
 import { GoPlus } from "react-icons/go";
@@ -24,7 +30,6 @@ const CineDesc = () => {
   const cineShowId = location.state.id;
   //console.log(previousScroll, cineShowId);
   const cineShowRow = location.state.row;
-  const cineShowList = location.state.list;
   const cineShowListType = location.state.type;
   const cineShowType = cineShowRow < 7 ? "movie" : "tvshow";
 
@@ -89,22 +94,31 @@ const CineDesc = () => {
     cineShow.runtime % 60
   } m`;
 
+  const cineShowRef = doc(db, "users", `${user?.email}`);
+
   useEffect(() => {
     axios.get(cineShowUrl).then((response) => {
-      cineShowList &&
-        cineShowList.map((res) => {
-          if (res.id === response.data.id) {
-            console.log("same id");
-          } else {
-            console.log("not same id");
+      setCineShow({ ...response.data, isSaved: false });
+      const checkId = async () => {
+        try {
+          const docSnap = await getDoc(cineShowRef);
+          if (docSnap.exists()) {
+            docSnap.data().savedCineShows.map((res) => {
+              if (res.id === response.data.id) {
+                setCineShow({ ...response.data, isSaved: true });
+              }
+            });
           }
-        });
-      setCineShow(response.data);
+        } catch (err) {
+          console.log(err);
+        }
+      };
+      checkId();
       setGenre(response.data.genres[0].name);
       setCast(response.data.credits.cast);
       setCrew(response.data.credits.crew);
     });
-  }, [cineShowUrl, cineShowList]);
+  }, [cineShowUrl]);
 
   useEffect(() => {
     const playVideo = async () => {
@@ -127,8 +141,6 @@ const CineDesc = () => {
     playVideo();
   }, [videoUrl]);
 
-  const cineShowRef = doc(db, "users", `${user?.email}`);
-
   const saveCineShow = async () => {
     if (user) {
       setCineShow({ ...cineShow, isSaved: true });
@@ -136,10 +148,10 @@ const CineDesc = () => {
         await updateDoc(cineShowRef, {
           savedCineShows: arrayUnion({
             id: cineShow.id,
+            img: cineShow.backdrop_path,
+            tagline: cineShow.tagline,
             title: cineShow.title || cineShow.name,
             type: cineShowType,
-            tagline: cineShow.tagline,
-            img: cineShow.backdrop_path,
           }),
         });
       } catch (e) {
@@ -160,16 +172,16 @@ const CineDesc = () => {
   const deleteCineShow = async () => {
     if (user) {
       try {
+        setCineShow({ ...cineShow, isSaved: false });
         await updateDoc(cineShowRef, {
           savedCineShows: arrayRemove({
             id: cineShow.id,
-            title: cineShow.title || cineShow.name,
-            type: cineShowType,
-            tagline: cineShow.tagline,
             img: cineShow.backdrop_path,
+            tagline: cineShow.tagline,
+            title: cineShow.title || cineShow.name,
+            type: "movie" || "tvshow",
           }),
         });
-        setCineShow({ ...cineShow, isSaved: false });
         alert(
           `"${
             cineShow.title || cineShow.name
@@ -266,7 +278,6 @@ const CineDesc = () => {
               <button
                 onClick={() => {
                   navigate("/");
-                  //history.back();
                 }}
                 className="text-sm border rounded-sm px-3 py-2"
               >
