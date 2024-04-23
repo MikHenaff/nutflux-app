@@ -11,6 +11,7 @@ import {
   deleteUser,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, deleteDoc } from "firebase/firestore";
+import ModalAlert from "./ModalAlert";
 
 const UserForm = ({ content, isChangingCreds, isDeletingAccount }) => {
   const [email, setEmail] = useState("");
@@ -18,6 +19,8 @@ const UserForm = ({ content, isChangingCreds, isDeletingAccount }) => {
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [error, setError] = useState("");
+  const [modal, setModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const { signUp, signIn } = UserAuth();
   const auth = getAuth();
   const user = auth.currentUser;
@@ -73,13 +76,13 @@ const UserForm = ({ content, isChangingCreds, isDeletingAccount }) => {
         alert("You're account has been successfully deleted!");
       }
     } catch (error) {
-      setError(error.message);
+      setModalMessage(error.message);
+      setModal(true);
     }
   };
 
   return (
     <>
-      {error && <p className="text-[#e50914]">{error}</p>}
       <form
         onSubmit={handleSubmit}
         className={`flex flex-col justify-center ${
@@ -139,6 +142,13 @@ const UserForm = ({ content, isChangingCreds, isDeletingAccount }) => {
           </button>
         </div>
       </form>
+      {modal && (
+        <ModalAlert
+          message={modalMessage}
+          closeModal={setModal}
+          redColor={true}
+        />
+      )}
     </>
   );
 };

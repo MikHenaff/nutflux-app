@@ -9,6 +9,7 @@ import {
   updateDoc,
   arrayRemove,
 } from "firebase/firestore";
+import ModalAlert from "../components/ModalAlert";
 import axios from "axios";
 import urls from "../utils/urls";
 import { GoPlus } from "react-icons/go";
@@ -20,15 +21,14 @@ const CineDesc = () => {
   const [cast, setCast] = useState([]);
   const [crew, setCrew] = useState([]);
   const [videoKeys, setVideoKeys] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
+  const [error, setError] = useState(false);
   const { user } = UserAuth();
   const navigate = useNavigate();
 
-  //console.log(cineShow);
-
   const location = useLocation();
-  //const previousScroll = location.state.scroll;
   const cineShowId = location.state.id;
-  //console.log(previousScroll, cineShowId);
   const cineShowRow = location.state.row;
   const cineShowListType = location.state.type;
   const cineShowType = cineShowRow < 7 ? "movie" : "tvshow";
@@ -65,7 +65,7 @@ const CineDesc = () => {
       : false;
 
   let directors =
-    cineShowRow === "movie"
+    cineShowType === "movie"
       ? crew
           .filter((person) => person.job === "Director")
           .map((person) => person.name)
@@ -90,9 +90,11 @@ const CineDesc = () => {
 
   const backdropBase = "https://image.tmdb.org/t/p/original/";
 
-  const runtime = `${Math.floor(cineShow.runtime / 60)} h ${
-    cineShow.runtime % 60
-  } m`;
+  const runtime = `${
+    (Math.floor(cineShow.runtime / 60) !== 0 &&
+      Math.floor(cineShow.runtime / 60) + " h") ||
+    ""
+  } ${(cineShow.runtime % 60 !== 0 && (cineShow.runtime % 60) + " m") || ""}`;
 
   const cineShowRef = doc(db, "users", `${user?.email}`);
 
@@ -109,8 +111,10 @@ const CineDesc = () => {
               }
             });
           }
-        } catch (err) {
-          console.log(err);
+        } catch (error) {
+          setError(true);
+          setModalMessage(`${error.message}`);
+          setModal(true);
         }
       };
       checkId();
@@ -154,18 +158,22 @@ const CineDesc = () => {
             type: cineShowType,
           }),
         });
-      } catch (e) {
-        console.log(e.message);
+      } catch (error) {
+        setError(true);
+        setModalMessage(`${error.message}`);
+        setModal(true);
       }
-      alert(
+      setModalMessage(
         `"${
           cineShow.title || cineShow.name
-        }" has been successfully added to your list`
+        }" has been successfully added to your list.`
       );
+      setModal(true);
     } else {
-      alert(
-        `Please sign to add "${cineShow.title || cineShow.name}" to your list`
+      setModalMessage(
+        `Please sign to add "${cineShow.title || cineShow.name}" to your list.`
       );
+      setModal(true);
     }
   };
 
@@ -179,113 +187,182 @@ const CineDesc = () => {
             img: cineShow.backdrop_path,
             tagline: cineShow.tagline,
             title: cineShow.title || cineShow.name,
-            type: "movie" || "tvshow",
+            type: cineShowListType || cineShowType,
           }),
         });
-        alert(
+        setModalMessage(
           `"${
             cineShow.title || cineShow.name
-          }" has been successfully removed from your list`
+          }" has been successfully removed from your list.`
         );
-      } catch (e) {
-        console.log(e.message);
+        setModal(true);
+      } catch (error) {
+        setError(true);
+        setModalMessage(`${error.message}`);
+        setModal(true);
       }
     } else {
-      alert(
+      setModalMessage(
         `Please sign to remove "${
           cineShow.title || cineShow.name
-        }" from your list`
+        }" from your list.`
       );
+      setModal(true);
     }
   };
 
   return (
-    <div>
-      <div className="w-full h-full">
-        <div className="relative">
-          <img
-            src={`${backdropBase}${cineShow?.backdrop_path}`}
-            alt={`${cineShow?.title || cineShow?.name} backdrop`}
-            className="w-full h-full sm:h-screen object-cover pt-[55px] sm:pt-0"
-          />
-          <div
-            className="sm:absolute top-0 left-0 bg-gradient-to-r from-black/100 to-black/0 w-full sm:w-2/3 lg:w-1/2 2xl:w-1/3
-          h-full flex flex-col justify-center items-center sm:items-start p-5 overflow-hidden"
+    <div className="w-full h-full">
+      <div className="relative">
+        <img
+          src={`${backdropBase}${cineShow?.backdrop_path}`}
+          alt={`${cineShow?.title || cineShow?.name} backdrop`}
+          className={`w-full object-cover ${
+            window.innerWidth > window.innerHeight && window.innerWidth < 900
+              ? "h-full pt-[55px]"
+              : "h-full sm:h-screen pt-[55px] sm:pt-0"
+          }`}
+        />
+        <div
+          className={`top-0 left-0 bg-gradient-to-r from-black/100 to-black/0
+          h-full flex flex-col justify-center p-5 overflow-hidden ${
+            window.innerWidth > window.innerHeight && window.innerWidth < 900
+              ? "relative w-full items-center"
+              : "relative sm:absolute w-full sm:w-2/3 lg:w-1/2 2xl:w-1/3 items-center sm:items-start"
+          }`}
+        >
+          <p
+            className={`underline underline-offset-2 ${
+              window.innerWidth > window.innerHeight && window.innerWidth < 900
+                ? "text-2xl"
+                : "text-2xl sm:text-4xl"
+            }`}
           >
-            <p className="text-2xl sm:text-4xl underline underline-offset-2">
-              {cineShow?.title || cineShow?.name}
-            </p>
-            <p className="pb-4">{cineShow?.tagline}</p>
-            <p className="text-sm sm:text-base text-[#999] pb-5">
-              {cineShow?.release_date?.split("-")[0] ||
-                cineShow?.first_air_date?.split("-")[0]}{" "}
-              |{" "}
-              {cineShow?.number_of_seasons !== undefined
-                ? `${cineShow?.number_of_seasons} ${
-                    cineShow?.number_of_seasons > 1 ? "seasons" : "season"
-                  }`
-                : runtime}{" "}
-              | {genre}
-            </p>
-            <div className="flex pb-5">
-              {videoKeys.length > 0 && (
-                <button className="sm:text-lg text-black bg-white border rounded-sm px-3 sm:px-5 py-1 sm:py-2 mr-3">
-                  <a href={videoLink} target="_blank" rel="noreferrer">
-                    Play
-                  </a>
-                </button>
-              )}
-              {cineShow.isSaved ? (
-                <button
-                  onClick={() => deleteCineShow()}
-                  className="flex justify-center items-center sm:text-lg border border-[#e50914] bg-[#e50914] hover:bg-[#f31217] rounded-sm px-3 py-1 sm:py-2"
-                >
-                  <MdPlaylistRemove className="text-xl sm:text-3xl" />
-                </button>
-              ) : (
-                <button
-                  onClick={() => saveCineShow()}
-                  className="flex justify-center items-center sm:text-lg border rounded-sm px-3 py-1 sm:py-2"
-                >
-                  <GoPlus className="text-xl sm:text-3xl mr-1" />
-                  My List
-                </button>
-              )}
-            </div>
-            <p className="sm:text-xl mb-5">{cineShow?.overview}</p>
-            <div className="flex flex-col pb-5">
-              {actors && (
-                <p>
-                  <span className="text-[#999]">Starring:&nbsp;</span>
-                  {actors}
-                </p>
-              )}
-              {cineShowRow < 7
-                ? directors && (
-                    <p>
-                      <span className="text-[#999]">Directed by:&nbsp;</span>
-                      {directors}
-                    </p>
-                  )
-                : creators && (
-                    <p>
-                      <span className="text-[#999]">Created by:&nbsp;</span>
-                      {creators}
-                    </p>
-                  )}
-            </div>
-            <div>
+            {cineShow?.title || cineShow?.name}
+          </p>
+          <p className="pb-4">{cineShow?.tagline}</p>
+          <p
+            className={`text-[#999] pb-5 ${
+              window.innerWidth > window.innerHeight && window.innerWidth < 900
+                ? "text-sm"
+                : "text-sm sm:text-base"
+            }`}
+          >
+            {cineShow?.release_date?.split("-")[0] ||
+              cineShow?.first_air_date?.split("-")[0]}{" "}
+            |{" "}
+            {cineShow?.number_of_seasons !== undefined
+              ? `${cineShow?.number_of_seasons} ${
+                  cineShow?.number_of_seasons > 1 ? "seasons" : "season"
+                }`
+              : runtime}{" "}
+            | {genre}
+          </p>
+          <div className="flex pb-5">
+            {videoKeys.length > 0 && (
               <button
-                onClick={() => {
-                  navigate("/");
-                }}
-                className="text-sm border rounded-sm px-3 py-2"
+                className={`text-black bg-white border rounded-sm mr-3 ${
+                  window.innerWidth > window.innerHeight &&
+                  window.innerWidth < 900
+                    ? "text-base px-3 py-1"
+                    : "text-base sm:text-lg px-3 sm:px-5 py-1 sm:py-2"
+                }`}
               >
-                Go Back
+                <a href={videoLink} target="_blank" rel="noreferrer">
+                  Play
+                </a>
               </button>
-            </div>
+            )}
+            {cineShow.isSaved ? (
+              <button
+                onClick={() => deleteCineShow()}
+                className={`flex justify-center items-center border border-[#e50914] bg-[#e50914] hover:bg-[#f31217] rounded-sm px-3 ${
+                  window.innerWidth > window.innerHeight &&
+                  window.innerWidth < 900
+                    ? "text-base py-1"
+                    : "text-base sm:text-lg py-1 sm:py-2"
+                }`}
+              >
+                <MdPlaylistRemove
+                  className={`${
+                    window.innerWidth > window.innerHeight &&
+                    window.innerWidth < 900
+                      ? "text-xl"
+                      : "text-xl sm:text-3xl"
+                  }`}
+                />
+              </button>
+            ) : (
+              <button
+                onClick={() => saveCineShow()}
+                className={`flex justify-center items-center border rounded-sm px-3 ${
+                  window.innerWidth > window.innerHeight &&
+                  window.innerWidth < 900
+                    ? "text-base py-1"
+                    : "text-base sm:text-lg py-1 sm:py-2"
+                }`}
+              >
+                <GoPlus
+                  className={`mr-1 ${
+                    window.innerWidth > window.innerHeight &&
+                    window.innerWidth < 900
+                      ? "text-xl"
+                      : "text-xl sm:text-3xl"
+                  }`}
+                />
+                My List
+              </button>
+            )}
+          </div>
+          <p
+            className={`mb-5 ${
+              window.innerWidth > window.innerHeight && window.innerWidth < 900
+                ? "text-base"
+                : "text-base sm:text-xl"
+            }`}
+          >
+            {cineShow?.overview}
+          </p>
+          <div className="flex flex-col pb-5">
+            {actors && (
+              <p>
+                <span className="text-[#999]">Starring:&nbsp;</span>
+                {actors}
+              </p>
+            )}
+            {cineShowRow < 7
+              ? directors && (
+                  <p>
+                    <span className="text-[#999]">Directed by:&nbsp;</span>
+                    {directors}
+                  </p>
+                )
+              : creators && (
+                  <p>
+                    <span className="text-[#999]">Created by:&nbsp;</span>
+                    {creators}
+                  </p>
+                )}
+          </div>
+          <div>
+            <button
+              onClick={() => {
+                navigate("/");
+              }}
+              className="text-sm border rounded-sm px-3 py-2"
+            >
+              Go Back
+            </button>
           </div>
         </div>
+        {modal && (
+          <ModalAlert
+            message={modalMessage}
+            closeModal={setModal}
+            width={true}
+            redColor={error ? true : false}
+          />
+        )}
       </div>
     </div>
   );

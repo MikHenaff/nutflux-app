@@ -22,7 +22,6 @@ const Home = () => {
     <>
       {user ? (
         <div
-          id="page"
           className={`w-full h-full ${window.innerWidth < 500 && "pt-[55px]"}`}
         >
           <div className="relative">
@@ -46,10 +45,17 @@ const Home = () => {
           <img
             src={BGimg}
             alt="background image"
-            className="w-full h-full object-cover object-left	"
+            className="w-full h-full object-cover object-left"
           />
           <div className="absolute top-0 left-0 bg-gradient-to-b from-black/90 to-black/40 w-full h-full flex justify-center items-center">
-            <div className="flex flex-col items-center w-4/5 text-xl sm:text-2xl xl:text-3xl -mt-40">
+            <div
+              className={`flex flex-col items-center w-4/5 text-xl sm:text-2xl xl:text-3xl ${
+                window.innerWidth > window.innerHeight &&
+                window.innerWidth < 900
+                  ? "mt-0"
+                  : "-mt-40"
+              } `}
+            >
               <p className="text-3xl sm:text-5xl xl:text-6xl text-center font-bold pb-3 sm:pb-7">
                 Unlimited movies, TV shows, and more
               </p>

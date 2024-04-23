@@ -12,7 +12,7 @@ const SignIn = () => {
             <UserForm content="Sign In" />
             <p className="text-center">
               <span className="text-[#9db9bb] pb-4">New to Nutflux?</span>{" "}
-              <Link to="../signin" className="hover:underline">
+              <Link to="../signup" className="hover:underline">
                 Sign Up now
               </Link>
               .
@@ -26,7 +26,7 @@ const SignIn = () => {
             alt="background image"
             className="w-full h-full hidden sm:block object-cover object-right"
           />
-          <div className="m-auto sm:absolute sm:top-1/2 sm:left-1/2 sm:translate-x-[-50%] sm:translate-y-[-50%] w-[90%] sm:w-96 sm:h-1/2 sm:bg-black/70 sm:p-10 rounded-sm">
+          <div className="m-auto sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-[90%] sm:w-96 sm:h-1/2 sm:bg-black/70 sm:p-10 rounded-sm">
             <h1 className="self-start text-3xl mb-9">Sign In</h1>
             <UserForm content="Sign In" />
             <p className="text-center pt-5 sm:pt-0 xl:pt-5">

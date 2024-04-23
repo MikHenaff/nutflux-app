@@ -9,6 +9,7 @@ import CineDesc from "./pages/CineDesc";
 import Navbar from "./components/Navbar";
 import PrivateRoute from "./utils/PrivateRoute";
 import ChangeAccount from "./pages/ChangeAccount";
+import ErrorPage404 from "./pages/ErrorPage404";
 
 const router = createBrowserRouter([
   {
@@ -80,7 +81,7 @@ const router = createBrowserRouter([
   },
   {
     path: "*",
-    element: <p>Oups!</p>,
+    element: <ErrorPage404 />,
   },
 ]);
 

@@ -29,11 +29,11 @@ export function AuthContextProvider({ children }) {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const observer = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
     return () => {
-      unsubscribe();
+      observer();
     };
   });
 

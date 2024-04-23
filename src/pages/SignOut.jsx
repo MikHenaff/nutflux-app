@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { UserAuth } from "../context/AuthContext";
+import ModalAlert from "../components/ModalAlert";
 import BGimg from "../assets/img/nutflux-bg.jpg";
 
 const SignOut = () => {
+  const [modal, setModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const { logOut } = UserAuth();
   const navigate = useNavigate();
 
@@ -11,8 +15,9 @@ const SignOut = () => {
       await logOut();
       navigate("/");
       alert("You have been successfully logged out!");
-    } catch (e) {
-      alert(e.message);
+    } catch (error) {
+      setModalMessage(error.message);
+      setModal(true);
     }
   };
 
@@ -24,7 +29,13 @@ const SignOut = () => {
         className="w-full h-full hidden sm:block object-cover object-center"
       />
       <div className="sm:absolute sm:top-0 sm:left-0 sm:bg-black/70 w-full h-full flex flex-col justify-center items-center">
-        <div className=" flex flex-col justify-center items-center w-4/5 max-w-[1000px] -mt-40">
+        <div
+          className={`flex flex-col justify-center items-center w-4/5 max-w-[1000px] ${
+            window.innerWidth > window.innerHeight && window.innerWidth < 900
+              ? "mt-0"
+              : "-mt-40"
+          } `}
+        >
           <p className="text-center text-3xl mb-9">
             Are you sure you want to sign out?
           </p>
@@ -44,6 +55,14 @@ const SignOut = () => {
           </div>
         </div>
       </div>
+      {modal && (
+        <ModalAlert
+          message={modalMessage}
+          closeModal={setModal}
+          width={true}
+          redColor={true}
+        />
+      )}
     </div>
   );
 };

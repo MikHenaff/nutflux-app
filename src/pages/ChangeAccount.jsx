@@ -40,7 +40,7 @@ const ChangeAccount = () => {
             className="w-full h-full hidden sm:block object-cover object-right"
           />
           <div
-            className={`flex flex-col justify-around m-auto sm:absolute sm:top-1/2 sm:left-1/2 sm:translate-x-[-50%] sm:translate-y-[-50%] w-[90%] sm:w-96 ${
+            className={`flex flex-col justify-around m-auto sm:absolute sm:top-1/2 sm:left-1/2 sm:-translate-x-1/2 sm:-translate-y-1/2 w-[90%] sm:w-96 ${
               isDeletingAccount ? "sm:h-[40%]" : "sm:h-[60%]"
             } sm:bg-black/70 sm:p-10 rounded-sm`}
           >

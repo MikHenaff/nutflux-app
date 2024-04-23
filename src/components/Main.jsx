@@ -4,10 +4,13 @@ import { db } from "../firebase";
 import { doc, getDoc } from "firebase/firestore";
 import CineShowRow from "./CineShowRow";
 import ListRow from "./ListRow";
+import ModalAlert from "./ModalAlert";
 import urls from "../utils/urls";
 
 const Main = () => {
   const [list, setList] = useState([]);
+  const [modal, setModal] = useState(false);
+  const [modalMessage, setModalMessage] = useState("");
   const { user } = UserAuth();
 
   const cineShowRef = doc(db, "users", `${user?.email}`);
@@ -21,8 +24,9 @@ const Main = () => {
           coll.push(docSnap.data().savedCineShows);
           setList(coll[0]);
         }
-      } catch (e) {
-        console.log(e.message);
+      } catch (error) {
+        setModalMessage(`${error.message}`);
+        setModal(true);
       }
     };
     getList();
@@ -69,6 +73,7 @@ const Main = () => {
         name="Documentaries"
         url={urls.documentaryTVShows}
       />
+      {modal && <ModalAlert message={modalMessage} closeModal={setModal} />}
     </>
   );
 };
