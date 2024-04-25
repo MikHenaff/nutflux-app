@@ -1,13 +1,22 @@
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { UserAuth } from "../context/AuthContext";
-import axios from "axios";
 import Main from "../components/Main";
+import axios from "axios";
 import urls from "../utils/urls";
 import BGimg from "../assets/img/nutflux-bg.jpg";
 
 const Home = () => {
   const [movies, setMovies] = useState([]);
+  const [homeScrollHeight, setHomeScrollHeight] = useState(null);
   const { user } = UserAuth();
+
+  const homeRef = useRef(null);
+
+  useLayoutEffect(() => {
+    setHomeScrollHeight(
+      Math.floor(homeRef.current?.getBoundingClientRect().height)
+    );
+  }, [homeScrollHeight]);
 
   const backdropBase = "https://image.tmdb.org/t/p/original/";
   const bgRandomMovie = movies[Math.floor(Math.random() * movies.length)];
@@ -19,7 +28,7 @@ const Home = () => {
   }, []);
 
   return (
-    <>
+    <div ref={homeRef}>
       {user ? (
         <div
           className={`w-full h-full ${window.innerWidth < 500 && "pt-[55px]"}`}
@@ -38,7 +47,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <Main />
+          <Main pageHeight={homeScrollHeight} />
         </div>
       ) : (
         <div className="relative w-full h-screen">
@@ -65,7 +74,7 @@ const Home = () => {
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

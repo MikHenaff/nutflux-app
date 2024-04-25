@@ -5,6 +5,7 @@ import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 const List = ({ list, name }) => {
   const [scrollArrowLeft, setScrollArrowLeft] = useState(false);
   const [scrollArrowRight, setScrollArrowRight] = useState(false);
+
   const backdropBase = "https://image.tmdb.org/t/p/w500/";
 
   const checkScroll = () => {

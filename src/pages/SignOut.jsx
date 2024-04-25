@@ -47,7 +47,7 @@ const SignOut = () => {
               Yes
             </button>
             <button
-              onClick={() => history.back()}
+              onClick={() => navigate("/")}
               className="flex justify-center items-center w-full h-10 text-lg rounded-sm border hover:bg-white hover:text-black"
             >
               No

@@ -1,5 +1,5 @@
-import { UserAuth } from "../context/AuthContext";
 import { Link, NavLink } from "react-router-dom";
+import { UserAuth } from "../context/AuthContext";
 
 const HomeNavbar = () => {
   const { user } = UserAuth();
@@ -7,9 +7,9 @@ const HomeNavbar = () => {
   return (
     <>
       <nav
-        className={`flex justify-between xl:justify-around items-center fixed h-[55px] w-full ${
+        className={`z-20 flex justify-between xl:justify-around items-center fixed h-[55px] w-full px-2 xl:px-0 ${
           window.innerWidth < 500 ? "bg-black" : "bg-transparent"
-        } px-2 xl:px-0 z-50`}
+        }`}
       >
         {window.innerWidth < 500 ? (
           <Link

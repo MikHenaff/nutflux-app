@@ -1,15 +1,15 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import { AuthContextProvider } from "./context/AuthContext";
+import Navbar from "./components/Navbar";
 import Home from "./pages/Home";
 import SignUp from "./pages/SignUp";
 import SignIn from "./pages/SignIn";
 import SignOut from "./pages/SignOut";
 import Account from "./pages/Account";
-import CineDesc from "./pages/CineDesc";
-import Navbar from "./components/Navbar";
-import PrivateRoute from "./utils/PrivateRoute";
 import ChangeAccount from "./pages/ChangeAccount";
+import CineDesc from "./pages/CineDesc";
 import ErrorPage404 from "./pages/ErrorPage404";
+import PrivateRoute from "./utils/PrivateRoute";
 
 const router = createBrowserRouter([
   {

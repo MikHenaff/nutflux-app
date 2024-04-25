@@ -18,7 +18,6 @@ const UserForm = ({ content, isChangingCreds, isDeletingAccount }) => {
   const [password, setPassword] = useState("");
   const [newEmail, setNewEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
-  const [error, setError] = useState("");
   const [modal, setModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
   const { signUp, signIn } = UserAuth();
@@ -26,11 +25,8 @@ const UserForm = ({ content, isChangingCreds, isDeletingAccount }) => {
   const user = auth.currentUser;
   const navigate = useNavigate();
 
-  // message error à gérer
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setError("");
     try {
       if (window.location.pathname === "/signup") {
         await signUp(email, password);
@@ -92,7 +88,7 @@ const UserForm = ({ content, isChangingCreds, isDeletingAccount }) => {
         <input
           onChange={(e) => setEmail(e.target.value)}
           type="email"
-          className="z-50 h-12 rounded-sm bg-[#0f0f0f] border border-[#888] mb-5 pl-2"
+          className="z-30 h-12 rounded-sm bg-[#0f0f0f] border border-[#888] mb-5 pl-2"
           placeholder={
             window.location.pathname === "/change-account" && isChangingCreds
               ? "Current Email Address ..."
@@ -103,7 +99,7 @@ const UserForm = ({ content, isChangingCreds, isDeletingAccount }) => {
         <input
           onChange={(e) => setPassword(e.target.value)}
           type="password"
-          className="z-50 h-12 rounded-sm bg-[#0f0f0f] border border-[#888] mb-5 pl-2"
+          className="z-30 h-12 rounded-sm bg-[#0f0f0f] border border-[#888] mb-5 pl-2"
           placeholder={
             window.location.pathname === "/change-account" && isChangingCreds
               ? "Current Password ..."
@@ -145,7 +141,7 @@ const UserForm = ({ content, isChangingCreds, isDeletingAccount }) => {
       {modal && (
         <ModalAlert
           message={modalMessage}
-          closeModal={setModal}
+          handleModal={setModal}
           redColor={true}
         />
       )}

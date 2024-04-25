@@ -358,7 +358,7 @@ const CineDesc = () => {
         {modal && (
           <ModalAlert
             message={modalMessage}
-            closeModal={setModal}
+            handleModal={setModal}
             width={true}
             redColor={error ? true : false}
           />

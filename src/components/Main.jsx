@@ -7,7 +7,7 @@ import ListRow from "./ListRow";
 import ModalAlert from "./ModalAlert";
 import urls from "../utils/urls";
 
-const Main = () => {
+const Main = ({ pageHeight }) => {
   const [list, setList] = useState([]);
   const [modal, setModal] = useState(false);
   const [modalMessage, setModalMessage] = useState("");
@@ -73,7 +73,15 @@ const Main = () => {
         name="Documentaries"
         url={urls.documentaryTVShows}
       />
-      {modal && <ModalAlert message={modalMessage} closeModal={setModal} />}
+      {modal && (
+        <ModalAlert
+          message={modalMessage}
+          handleModal={setModal}
+          width={true}
+          redColor={true}
+          pageHeight={pageHeight}
+        />
+      )}
     </>
   );
 };
